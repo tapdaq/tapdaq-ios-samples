@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EaW-xm-chB">
+                                <rect key="frame" x="66" y="233" width="243" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="dAb-2l-sGa"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHe-hE-kJ2">
+                                <rect key="frame" x="66" y="463" width="104" height="30"/>
+                                <state key="normal" title="Load Native Ad"/>
+                                <connections>
+                                    <action selector="loadNativeAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OZ7-gm-d9g"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iza-3l-wtr">
+                                <rect key="frame" x="271" y="463" width="38" height="30"/>
+                                <state key="normal" title="Show"/>
+                                <connections>
+                                    <action selector="showNativeAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VUS-45-NXS"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xXn-lx-jZk">
+                                <rect key="frame" x="36" y="513" width="303" height="134"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y0H-6N-iAk">
+                                <rect key="frame" x="16" y="20" width="69" height="30"/>
+                                <state key="normal" title="Debugger"/>
+                                <connections>
+                                    <action selector="showDebugger:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JvH-wh-71r"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="xXn-lx-jZk" firstAttribute="top" secondItem="iza-3l-wtr" secondAttribute="bottom" constant="20" id="3G5-Gr-X4Q"/>
+                            <constraint firstItem="EaW-xm-chB" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="3jU-Mk-mTJ"/>
+                            <constraint firstItem="Y0H-6N-iAk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="IXC-4M-YVu"/>
+                            <constraint firstItem="EaW-xm-chB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JKp-pm-LU6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iza-3l-wtr" secondAttribute="trailing" constant="50" id="N6a-WL-sMp"/>
+                            <constraint firstItem="Y0H-6N-iAk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="RIW-df-XGe"/>
+                            <constraint firstItem="VHe-hE-kJ2" firstAttribute="top" secondItem="EaW-xm-chB" secondAttribute="bottom" constant="30" id="W2Y-Lh-ry4"/>
+                            <constraint firstItem="VHe-hE-kJ2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="Wki-gg-g1a"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="xXn-lx-jZk" secondAttribute="bottom" constant="20" id="Wwl-zG-tAN"/>
+                            <constraint firstItem="EaW-xm-chB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="Zi9-z0-L8z"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EaW-xm-chB" secondAttribute="trailing" constant="50" id="dSI-8x-ciO"/>
+                            <constraint firstItem="xXn-lx-jZk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="gIv-aM-mMO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xXn-lx-jZk" secondAttribute="trailing" constant="20" id="gm4-iV-OAD"/>
+                            <constraint firstItem="iza-3l-wtr" firstAttribute="top" secondItem="EaW-xm-chB" secondAttribute="bottom" constant="30" id="iQz-t6-EQz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="EaW-xm-chB" id="rl6-xZ-agr"/>
+                        <outlet property="loadNativeAdBtn" destination="VHe-hE-kJ2" id="2eI-vZ-uf0"/>
+                        <outlet property="showNativeAdBtn" destination="iza-3l-wtr" id="L6j-HT-nbk"/>
+                        <outlet property="textView" destination="xXn-lx-jZk" id="fIa-B4-J53"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
+        </scene>
+    </scenes>
+</document>

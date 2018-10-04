@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MoreAppsSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lek-UJ-4BZ">
+                                <rect key="frame" x="56" y="318" width="112" height="30"/>
+                                <state key="normal" title="Load More Apps"/>
+                                <connections>
+                                    <action selector="loadMoreAppsWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xJn-XT-XkN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61e-Vw-tGu">
+                                <rect key="frame" x="281" y="318" width="38" height="30"/>
+                                <state key="normal" title="Show"/>
+                                <connections>
+                                    <action selector="showMoreAppsWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cRK-6f-JCe"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NIc-HW-0dk">
+                                <rect key="frame" x="36" y="378" width="303" height="269"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RNk-Pc-Ysa">
+                                <rect key="frame" x="16" y="20" width="69" height="30"/>
+                                <state key="normal" title="Debugger"/>
+                                <connections>
+                                    <action selector="showDebugger:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BrR-DA-hpe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Lek-UJ-4BZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="40" id="3m9-Mu-SIg"/>
+                            <constraint firstItem="NIc-HW-0dk" firstAttribute="top" secondItem="61e-Vw-tGu" secondAttribute="bottom" constant="30" id="CX2-PO-mId"/>
+                            <constraint firstItem="NIc-HW-0dk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="GXe-US-2vs"/>
+                            <constraint firstItem="Lek-UJ-4BZ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="MIX-Rq-0vX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="61e-Vw-tGu" secondAttribute="trailing" constant="40" id="RJx-DF-hTf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NIc-HW-0dk" secondAttribute="trailing" constant="20" id="SUi-ye-2Ig"/>
+                            <constraint firstItem="RNk-Pc-Ysa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="UKJ-x5-NSN"/>
+                            <constraint firstItem="RNk-Pc-Ysa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="cfz-AS-P8c"/>
+                            <constraint firstItem="61e-Vw-tGu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="emn-91-2JL"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NIc-HW-0dk" secondAttribute="bottom" constant="20" id="fAR-Xq-Pw4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loadMoreAppsBtn" destination="Lek-UJ-4BZ" id="dsx-Pq-YFm"/>
+                        <outlet property="showMoreAppsBtn" destination="61e-Vw-tGu" id="aFu-fK-JGc"/>
+                        <outlet property="textView" destination="NIc-HW-0dk" id="B8J-zy-Ip3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

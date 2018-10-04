@@ -1,2 +1,1 @@
-# tapdaq-ios-samples
-Tapdaq iOS SDK Sample Projects
+# ios-sample-apps
