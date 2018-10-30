@@ -1078,12 +1078,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Mediation/Pods-Mediation-frameworks.sh",
 				"${PODS_ROOT}/YouAppiMoatSDK/YouAppiMoat.framework",
+				"${BUILT_PRODUCTS_DIR}/mopub-ios-sdk/MoPub.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YouAppiMoat.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MoPub.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1259,12 +1261,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MediationSwift/Pods-MediationSwift-frameworks.sh",
 				"${PODS_ROOT}/YouAppiMoatSDK/YouAppiMoat.framework",
+				"${BUILT_PRODUCTS_DIR}/mopub-ios-sdk/MoPub.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YouAppiMoat.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MoPub.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

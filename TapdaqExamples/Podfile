@@ -38,6 +38,7 @@ def all_networks
     pod 'Tapdaq/InMobi'
     pod 'Tapdaq/IronSource'
     pod 'Tapdaq/Kiip'
+    pod 'Tapdaq/MoPub'
     pod 'Tapdaq/Receptiv'
     pod 'Tapdaq/Tapjoy'
     pod 'Tapdaq/UnityAds'

@@ -8,6 +8,17 @@ PODS:
   - IronSourceSDK (6.7.12.0)
   - KiipSDK (3.0.3)
   - MediaBrix (1.8.3.001)
+  - mopub-ios-sdk (5.3.0):
+    - mopub-ios-sdk/MoPubSDK (= 5.3.0)
+  - mopub-ios-sdk/Avid (5.3.0):
+    - mopub-ios-sdk/Core
+  - mopub-ios-sdk/Core (5.3.0)
+  - mopub-ios-sdk/Moat (5.3.0):
+    - mopub-ios-sdk/Core
+  - mopub-ios-sdk/MoPubSDK (5.3.0):
+    - mopub-ios-sdk/Avid
+    - mopub-ios-sdk/Core
+    - mopub-ios-sdk/Moat
   - PlayableAds (2.0.7)
   - Tapdaq (6.4.0):
     - Tapdaq/SDK (= 6.4.0)
@@ -55,6 +66,11 @@ PODS:
     - KiipSDK (= 3.0.3)
     - Tapdaq/KiipAdapter
   - Tapdaq/KiipAdapter (6.4.0):
+    - Tapdaq/SDK
+  - Tapdaq/MoPub (6.4.0):
+    - mopub-ios-sdk (= 5.3.0)
+    - Tapdaq/MoPubAdapter
+  - Tapdaq/MoPubAdapter (6.4.0):
     - Tapdaq/SDK
   - Tapdaq/Receptiv (6.4.0):
     - MediaBrix (= 1.8.3.001)
@@ -106,6 +122,7 @@ DEPENDENCIES:
   - Tapdaq/InMobi
   - Tapdaq/IronSource
   - Tapdaq/Kiip
+  - Tapdaq/MoPub
   - Tapdaq/Receptiv
   - Tapdaq/Tapjoy
   - Tapdaq/UnityAds
@@ -123,6 +140,7 @@ SPEC REPOS:
     - InMobiSDK
     - IronSourceSDK
     - KiipSDK
+    - mopub-ios-sdk
     - PlayableAds
     - TapjoySDK
     - UnityAds
@@ -144,6 +162,7 @@ SPEC CHECKSUMS:
   IronSourceSDK: 1c8cde15920ec0f1482d05b9acdd4a3f387b2ce3
   KiipSDK: 41d9155e6de26c16acae855e6b5e96520fe246be
   MediaBrix: bf80998702b34c10bf05e62882b3d45f9320581d
+  mopub-ios-sdk: 995d0cf8bbb5f9e81389ac981c2f1555dc77e84f
   PlayableAds: c0476d0f911842994ec5c45bff5c7c53c32282f8
   Tapdaq: fd9bf71888249e9b01ad69d1294e3ce8a785e596
   TapdaqHyprMXSDK: 25d901e3777549456e7da5b2e108d2d3718d3de1
@@ -152,6 +171,6 @@ SPEC CHECKSUMS:
   VungleSDK-iOS: a8665f4e826ad688135429f4618df4235f8738c7
   YouAppiMoatSDK: f69d8016feda5cb3baadad2410b7f3a96b8e71df
 
-PODFILE CHECKSUM: 90f08754cc7172cfdddda4fb461fe6bb17f7d307
+PODFILE CHECKSUM: ddd88fce9965b95a968b9f590074d46b54d7750e
 
 COCOAPODS: 1.6.0.beta.1
