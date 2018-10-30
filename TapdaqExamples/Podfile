@@ -1,0 +1,93 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+# This line is required to be able to install Tapdaq SDK and network adapters
+source 'https://github.com/tapdaq/cocoapods-specs.git'
+# This line is required to be able to install Receptiv SDK using CocoaPods
+source 'https://github.com/mediabrix/mediabrix-cocoapods-spec.git'
+
+use_frameworks!
+
+def sdk_dep
+    pod 'Tapdaq'
+end
+
+def interstitial_networks
+    pod 'Tapdaq/AdMob'
+    pod 'Tapdaq/AppLovin'
+    pod 'Tapdaq/Chartboost'
+    pod 'Tapdaq/InMobi'
+    pod 'Tapdaq/Kiip'
+    pod 'Tapdaq/YouAppi'
+end
+
+def native_networks
+    pod 'Tapdaq/AdMob'
+    pod 'Tapdaq/AppLovin'
+    pod 'Tapdaq/FAN'
+end
+
+def all_networks
+    pod 'Tapdaq/AdColony'
+    pod 'Tapdaq/AdMob'
+    pod 'Tapdaq/AppLovin'
+    pod 'Tapdaq/Chartboost'
+    pod 'Tapdaq/FAN'
+    pod 'Tapdaq/HyprMx'
+    pod 'Tapdaq/InMobi'
+    pod 'Tapdaq/IronSource'
+    pod 'Tapdaq/Kiip'
+    pod 'Tapdaq/Receptiv'
+    pod 'Tapdaq/Tapjoy'
+    pod 'Tapdaq/UnityAds'
+    pod 'Tapdaq/Vungle'
+    pod 'Tapdaq/YouAppi'
+    pod 'Tapdaq/ZPlay'
+end
+
+target 'InterstitialOnBootup' do
+    sdk_dep
+    interstitial_networks
+end
+
+target 'InterstitialOnBootupSwift' do
+    sdk_dep
+    interstitial_networks
+end
+
+target 'Mediation' do
+    sdk_dep
+    all_networks
+end
+
+target 'MediationSwift' do
+    sdk_dep
+    all_networks
+end
+
+target 'NativeAds' do
+    sdk_dep
+end
+
+target 'NativeAdsSwift' do
+    sdk_dep
+end
+
+target 'NativeAdsMediation' do
+    sdk_dep
+    native_networks
+end
+
+target 'NativeAdsMediationSwift' do
+    sdk_dep
+    native_networks
+end
+
+target 'MoreApps' do
+    sdk_dep
+end
+
+target 'MoreAppsSwift' do
+    sdk_dep
+end
