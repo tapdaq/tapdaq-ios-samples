@@ -27,7 +27,6 @@ static NSString *const kRewardNameKey = @"MyRewardName";
 static NSString *const kRewardAmountKey = @"MyRewardAmount";
 static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 
-
 @interface ViewController () <TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate, TDBannerAdRequestDelegate, TDRewardedVideoAdRequestDelegate>
 
 @property (strong, nonatomic) TDMediationAdRequest *interstitialAdRequest;
@@ -38,40 +37,65 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [[Tapdaq sharedSession] setDelegate:self];
     [self updateRewardUI];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     [self updateUI];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)updateUI {
-    self.loadInterstitialBtn.enabled = Tapdaq.sharedSession.isConfigLoaded;
-    self.loadVideoBtn.enabled = Tapdaq.sharedSession.isConfigLoaded;
-    self.loadRewardedBtn.enabled = Tapdaq.sharedSession.isConfigLoaded;
-    self.loadBannerBtn.enabled = Tapdaq.sharedSession.isConfigLoaded;
+- (void)updateUI
+{
+    BOOL isInitialised = Tapdaq.sharedSession.isInitialised;
+    BOOL isBannerReady = Tapdaq.sharedSession.isBannerReady;
+    
+    self.loadInterstitialBtn.enabled = isInitialised && !self.interstitialAdRequest.isReady;
+    self.loadVideoBtn.enabled = isInitialised && !self.videoAdRequest.isReady;
+    self.loadRewardedBtn.enabled = isInitialised && !self.rewardedAdRequest.isReady;
+    self.loadBannerBtn.enabled = isInitialised && !isBannerReady;
     
     self.showInterstitialBtn.enabled = self.interstitialAdRequest.isReady;
     self.showVideoBtn.enabled = self.videoAdRequest.isReady;
     self.showRewardedBtn.enabled = self.rewardedAdRequest.isReady;
     
-    self.showBannerBtn.enabled = [Tapdaq.sharedSession isBannerReady];
+    self.showBannerBtn.enabled = isBannerReady;
 }
 
 #pragma mark - Target action 
 
-- (IBAction)loadBanner:(id)sender {
-    [[Tapdaq sharedSession] loadBanner:TDMBannerStandard];
+- (IBAction)loadAd:(UIButton *)sender
+{
+    if (sender == self.loadBannerBtn) {
+        [[Tapdaq sharedSession] loadBanner:TDMBannerStandard];
+    } else if (sender == self.loadInterstitialBtn) {
+        [[Tapdaq sharedSession] loadInterstitialForPlacementTag:TDPTagDefault delegate:self];
+    } else if (sender == self.loadVideoBtn) {
+        [[Tapdaq sharedSession] loadVideoForPlacementTag:TDPTagDefault delegate:self];
+    } else if (sender == self.loadRewardedBtn) {
+        [[Tapdaq sharedSession] loadRewardedVideoForPlacementTag:TDPTagDefault delegate:self];
+    }
+}
+
+- (IBAction)showAd:(UIButton *)sender
+{
+    if (sender == self.showInterstitialBtn) {
+        [self.interstitialAdRequest display];
+    } else if (sender == self.showVideoBtn) {
+        [self.videoAdRequest display];
+    } else if (sender == self.showRewardedBtn) {
+        [self.rewardedAdRequest display];
+    }
 }
 
 - (IBAction)showBanner:(id)sender
@@ -79,55 +103,31 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
     NSInteger tagInt = [self.showBannerBtn tag];
     
     if (tagInt == 1) {
-        
         [self.adBanner removeFromSuperview];
         
         [self.showBannerBtn setTag:0];
         [self.showBannerBtn setTitle:@"Show" forState:UIControlStateNormal];
         [self.showBannerBtn setEnabled:NO];
-        
     } else {
-        
         if ([[Tapdaq sharedSession] isBannerReady]) {
-            
             self.adBanner = [[Tapdaq sharedSession] getBanner];
+            
+            CGPoint adBannerCenter = CGPointMake(self.bannerView.frame.size.width / 2,
+                                                 self.bannerView.frame.size.height / 2);
+            
+            [self.adBanner setCenter:adBannerCenter];
             [self.bannerView addSubview:self.adBanner];
-            self.adBanner.center = self.bannerView.center;
+            [self.bannerView setNeedsDisplay];
             
             [self.showBannerBtn setTag:1];
             [self.showBannerBtn setTitle:@"Hide" forState:UIControlStateNormal];
-            
         }
-        
     }
 }
 
-- (IBAction)showDebugger:(id)sender {
+- (IBAction)showDebugger:(id)sender
+{
     [[Tapdaq sharedSession] presentDebugViewController];
-}
-
-- (IBAction)loadInterstitial:(id)sender {
-    [[Tapdaq sharedSession] loadInterstitialForPlacementTag:TDPTagDefault delegate:self];
-}
-
-- (IBAction)showInterstitial:(id)sender {
-    [self.interstitialAdRequest display];
-}
-
-- (IBAction)loadVideo:(id)sender {
-    [[Tapdaq sharedSession] loadVideoForPlacementTag:TDPTagDefault delegate:self];
-}
-
-- (IBAction)showVideo:(id)sender {
-    [self.videoAdRequest display];
-}
-
-- (IBAction)loadRewarded:(id)sender {
-    [[Tapdaq sharedSession] loadRewardedVideoForPlacementTag:TDPTagDefault delegate:self];
-}
-
-- (IBAction)showRewarded:(id)sender {
-    [self.rewardedAdRequest display];
 }
 
 #pragma mark - Private methods
@@ -160,19 +160,22 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 
 #pragma mark - TapdaqDelegate
 
-- (void)didLoadConfig{
+- (void)didLoadConfig
+{
     [self logMessage:@"Tapdaq config loaded"];
     [self updateUI];
 }
 
-- (void)didFailToLoadConfigWithError:(TDError *)error {
+- (void)didFailToLoadConfigWithError:(TDError *)error
+{
     [self logMessage:@"Tapdaq config failed to load"];
     [self updateUI];
 }
 
 #pragma mark - TDAdRequestDelegate
 
-- (void)didLoadAdRequest:(TDAdRequest *)adRequest {
+- (void)didLoadAdRequest:(TDAdRequest *)adRequest
+{
     [self logMessage:[NSString stringWithFormat:@"Did load \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
     if ([adRequest isKindOfClass:[TDMediationAdRequest class]] && [adRequest.placement.tag isEqualToString:TDPTagDefault]) {
         switch (adRequest.placement.adTypes) {
@@ -191,34 +194,41 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
     [self updateUI];
 }
 
-- (void)adRequest:(TDAdRequest *)adRequest didFailToLoadWithError:(TDError *)error {
+- (void)adRequest:(TDAdRequest *)adRequest didFailToLoadWithError:(TDError *)error
+{
     [self logMessage:[NSString stringWithFormat:@"Failed to load \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
     [self logMessage:[NSString stringWithFormat:@"Error: %@", error.localizedDescription]];
 }
 
 #pragma mark - TDDisplayableAdRequestDelegate
 
-- (void)willDisplayAdRequest:(TDAdRequest *)adRequest {
+- (void)willDisplayAdRequest:(TDAdRequest *)adRequest
+{
     [self logMessage:[NSString stringWithFormat:@"Will display \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
 }
 
-- (void)didDisplayAdRequest:(TDAdRequest *)adRequest {
+- (void)didDisplayAdRequest:(TDAdRequest *)adRequest
+{
     [self logMessage:[NSString stringWithFormat:@"Did display \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
 }
 
-- (void)didCloseAdRequest:(TDAdRequest *)adRequest {
+- (void)didCloseAdRequest:(TDAdRequest *)adRequest
+{
     [self logMessage:[NSString stringWithFormat:@"Did Close \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
+    [self updateUI];
 }
 
 #pragma mark - TDClickableAdRequestDelegate
 
-- (void)didClickAdRequest:(TDAdRequest *)adRequest {
+- (void)didClickAdRequest:(TDAdRequest *)adRequest
+{
     [self logMessage:[NSString stringWithFormat:@"Did Click \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
 }
 
 #pragma mark - TDRewardedVideoAdRequestDelegate
 
-- (void)adRequest:(TDAdRequest *)adRequest didValidateReward:(TDReward *)reward {
+- (void)adRequest:(TDAdRequest *)adRequest didValidateReward:(TDReward *)reward
+{
     NSNumber *storedRewardAmount = [[NSUserDefaults standardUserDefaults] objectForKey:kRewardAmountKey];
     
     int storedRewardAmountInt = [storedRewardAmount intValue];
@@ -236,8 +246,9 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
     [self logMessage:[NSString stringWithFormat:@"Received reward for tag:%@ name:%@ value:%d custom JSON: %@", adRequest.placement.tag, reward.name, reward.value, reward.customJson]];
 }
 
-- (void)didFailToValidateRewardAdRequest:(TDAdRequest *)adRequest {
-    [self logMessage:[NSString stringWithFormat:@"Failed to validate reward for tag:%@", adRequest.placement.tag]];
+- (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToValidateReward:(TDReward * _Nonnull)reward
+{
+    [self logMessage:[NSString stringWithFormat:@"Failed to validate reward for tag: %@", adRequest.placement.tag]];
 
 }
 #pragma mark Banner delegate methods
@@ -246,11 +257,6 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 {
     [self updateUI];
     [self logMessage:@"Did load banner"];
-}
-
-- (void)didFailToLoadBanner
-{
-    [self logMessage:@"Failed to load banner"];
 }
 
 - (void)didClickBanner

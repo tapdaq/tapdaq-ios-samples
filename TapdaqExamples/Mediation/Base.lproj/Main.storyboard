@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,59 +22,59 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZa-c3-lmV">
-                                <rect key="frame" x="36" y="318" width="107" height="30"/>
+                                <rect key="frame" x="36" y="318.5" width="107" height="30"/>
                                 <state key="normal" title="Load Rewarded"/>
                                 <connections>
-                                    <action selector="loadRewarded:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Lk-xD-hpF"/>
+                                    <action selector="loadAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fn5-Y4-cvZ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iI-R2-Nb0">
-                                <rect key="frame" x="36" y="258" width="77" height="30"/>
+                                <rect key="frame" x="36" y="258.5" width="77" height="30"/>
                                 <state key="normal" title="Load Video"/>
                                 <connections>
-                                    <action selector="loadVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QeE-Qc-Roa"/>
+                                    <action selector="loadAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E07-Le-VZd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcZ-3A-ZLd">
-                                <rect key="frame" x="36" y="198" width="106" height="30"/>
+                                <rect key="frame" x="36" y="198.5" width="106" height="30"/>
                                 <state key="normal" title="Load Interstitial"/>
                                 <connections>
-                                    <action selector="loadInterstitial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iwq-6t-VhQ"/>
+                                    <action selector="loadAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="46x-Y2-red"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TY3-Fp-2JQ">
-                                <rect key="frame" x="36" y="378" width="87" height="30"/>
+                                <rect key="frame" x="36" y="378.5" width="87" height="30"/>
                                 <state key="normal" title="Load Banner"/>
                                 <connections>
-                                    <action selector="loadBanner:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PRw-h2-RcY"/>
+                                    <action selector="loadAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IVZ-HG-lGH"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyj-c5-bS3">
-                                <rect key="frame" x="301" y="378" width="38" height="30"/>
+                                <rect key="frame" x="301" y="378.5" width="38" height="30"/>
                                 <state key="normal" title="Show"/>
                                 <connections>
                                     <action selector="showBanner:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GI4-ag-tmF"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j1L-Cm-dfg">
-                                <rect key="frame" x="301" y="318" width="38" height="30"/>
+                                <rect key="frame" x="301" y="318.5" width="38" height="30"/>
                                 <state key="normal" title="Show"/>
                                 <connections>
-                                    <action selector="showRewarded:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mFQ-d1-T3C"/>
+                                    <action selector="showAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b3K-OS-Nk1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZU-Hl-xxZ">
-                                <rect key="frame" x="301" y="258" width="38" height="30"/>
+                                <rect key="frame" x="301" y="258.5" width="38" height="30"/>
                                 <state key="normal" title="Show"/>
                                 <connections>
-                                    <action selector="showVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lpj-9s-3yK"/>
+                                    <action selector="showAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OWw-UU-Wyg"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DfY-W0-5mu">
-                                <rect key="frame" x="301" y="198" width="38" height="30"/>
+                                <rect key="frame" x="301" y="198.5" width="38" height="30"/>
                                 <state key="normal" title="Show"/>
                                 <connections>
-                                    <action selector="showInterstitial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dbw-Pj-Z07"/>
+                                    <action selector="showAd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sJJ-0K-6H2"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cu-rG-bmV">
@@ -97,14 +96,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N97-XM-f2v">
-                                <rect key="frame" x="0.0" y="438" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="438.5" width="375" height="50"/>
                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="0Rl-tk-MYN"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="OEG-Et-pkW">
-                                <rect key="frame" x="36" y="508" width="303" height="139"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEG-Et-pkW">
+                                <rect key="frame" x="36" y="508.5" width="303" height="138.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
