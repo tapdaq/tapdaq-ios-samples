@@ -28,21 +28,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *rewardName;
 @property (nonatomic, strong) IBOutlet UILabel *rewardAmount;
 
-- (IBAction)loadBanner:(id)sender;
+- (IBAction)loadAd:(UIButton *)sender;
+
+- (IBAction)showAd:(UIButton *)sender;
 
 - (IBAction)showBanner:(id)sender;
-
-- (IBAction)loadInterstitial:(id)sender;
-
-- (IBAction)showInterstitial:(id)sender;
-
-- (IBAction)loadVideo:(id)sender;
-
-- (IBAction)showVideo:(id)sender;
-
-- (IBAction)loadRewarded:(id)sender;
-
-- (IBAction)showRewarded:(id)sender;
 
 @end
 

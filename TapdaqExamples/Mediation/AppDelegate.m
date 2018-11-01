@@ -19,6 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     TDProperties *tapdaqProps = [[TDProperties alloc] init];
+    [tapdaqProps setLogLevel:TDLogLevelDebug];
     
     TDPlacement *defaultPlacement = [[TDPlacement alloc] initWithAdTypes:TDAdTypeInterstitial | TDAdTypeVideo | TDAdTypeRewardedVideo
                                                                    forTag:TDPTagDefault];
