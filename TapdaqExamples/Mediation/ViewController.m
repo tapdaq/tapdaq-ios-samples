@@ -32,7 +32,6 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 @property (strong, nonatomic) TDMediationAdRequest *interstitialAdRequest;
 @property (strong, nonatomic) TDMediationAdRequest *videoAdRequest;
 @property (strong, nonatomic) TDMediationAdRequest *rewardedAdRequest;
-
 @end
 
 @implementation ViewController
@@ -58,18 +57,17 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 - (void)updateUI
 {
     BOOL isInitialised = Tapdaq.sharedSession.isInitialised;
-    BOOL isBannerReady = Tapdaq.sharedSession.isBannerReady;
     
-    self.loadInterstitialBtn.enabled = isInitialised && !self.interstitialAdRequest.isReady;
-    self.loadVideoBtn.enabled = isInitialised && !self.videoAdRequest.isReady;
-    self.loadRewardedBtn.enabled = isInitialised && !self.rewardedAdRequest.isReady;
-    self.loadBannerBtn.enabled = isInitialised && !isBannerReady;
+    self.loadInterstitialBtn.enabled = isInitialised;
+    self.loadVideoBtn.enabled = isInitialised;
+    self.loadRewardedBtn.enabled = isInitialised;
+    self.loadBannerBtn.enabled = isInitialised;
     
     self.showInterstitialBtn.enabled = self.interstitialAdRequest.isReady;
     self.showVideoBtn.enabled = self.videoAdRequest.isReady;
     self.showRewardedBtn.enabled = self.rewardedAdRequest.isReady;
     
-    self.showBannerBtn.enabled = isBannerReady;
+    self.showBannerBtn.enabled = self.adBanner != nil;
 }
 
 #pragma mark - Target action 
@@ -77,7 +75,9 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 - (IBAction)loadAd:(UIButton *)sender
 {
     if (sender == self.loadBannerBtn) {
-        [[Tapdaq sharedSession] loadBanner:TDMBannerStandard];
+        [[Tapdaq sharedSession] loadBannerWithSize:TDMBannerStandard completion:^(UIView *bannerView) {
+            self.adBanner = bannerView;
+        }];
     } else if (sender == self.loadInterstitialBtn) {
         [[Tapdaq sharedSession] loadInterstitialForPlacementTag:TDPTagDefault delegate:self];
     } else if (sender == self.loadVideoBtn) {
@@ -90,11 +90,11 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 - (IBAction)showAd:(UIButton *)sender
 {
     if (sender == self.showInterstitialBtn) {
-        [self.interstitialAdRequest display];
+        [Tapdaq.sharedSession showInterstitialForPlacementTag:TDPTagDefault];
     } else if (sender == self.showVideoBtn) {
-        [self.videoAdRequest display];
+        [Tapdaq.sharedSession showVideoForPlacementTag:TDPTagDefault];
     } else if (sender == self.showRewardedBtn) {
-        [self.rewardedAdRequest display];
+        [Tapdaq.sharedSession showRewardedVideoForPlacementTag:TDPTagDefault];
     }
 }
 
@@ -109,8 +109,7 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
         [self.showBannerBtn setTitle:@"Show" forState:UIControlStateNormal];
         [self.showBannerBtn setEnabled:NO];
     } else {
-        if ([[Tapdaq sharedSession] isBannerReady]) {
-            self.adBanner = [[Tapdaq sharedSession] getBanner];
+        if (self.adBanner != nil) {
             
             CGPoint adBannerCenter = CGPointMake(self.bannerView.frame.size.width / 2,
                                                  self.bannerView.frame.size.height / 2);
@@ -177,7 +176,7 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 - (void)didLoadAdRequest:(TDAdRequest *)adRequest
 {
     [self logMessage:[NSString stringWithFormat:@"Did load \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
-    if ([adRequest isKindOfClass:[TDMediationAdRequest class]] && [adRequest.placement.tag isEqualToString:TDPTagDefault]) {
+    if ([adRequest.placement.tag isEqualToString:TDPTagDefault]) {
         switch (adRequest.placement.adTypes) {
             case TDAdTypeInterstitial:
                 self.interstitialAdRequest = (TDMediationAdRequest *)adRequest;
@@ -210,6 +209,11 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 - (void)didDisplayAdRequest:(TDAdRequest *)adRequest
 {
     [self logMessage:[NSString stringWithFormat:@"Did display \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
+}
+
+- (void)adRequest:(TDAdRequest *)adRequest didFailToDisplayWithError:(TDError *)error {
+    [self logMessage:[NSString stringWithFormat:@"Failed to display \"%@\" - tag: \"%@\"", AdTypeNameFromTDAdTypes(adRequest.placement.adTypes), adRequest.placement.tag]];
+    [self logMessage:[NSString stringWithFormat:@"Error: %@", error.localizedDescription]];
 }
 
 - (void)didCloseAdRequest:(TDAdRequest *)adRequest

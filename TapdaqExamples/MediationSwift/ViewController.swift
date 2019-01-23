@@ -47,9 +47,9 @@ class ViewController: UIViewController, TapdaqDelegate {
     @IBOutlet var rewardNameLabel: UILabel!
     @IBOutlet var rewardAmountLabel: UILabel!
     
-    fileprivate var interstitialAdRequest: TDMediationAdRequest?
-    fileprivate var videoAdRequest: TDMediationAdRequest?
-    fileprivate var rewardedAdRequest: TDMediationAdRequest?
+    fileprivate var interstitialAdRequest: TDAdRequest?
+    fileprivate var videoAdRequest: TDAdRequest?
+    fileprivate var rewardedAdRequest: TDAdRequest?
     
 
     override func viewDidLoad() {
@@ -64,16 +64,16 @@ class ViewController: UIViewController, TapdaqDelegate {
     }
     
     fileprivate func updateUI() {
-        self.loadInterstitialBtn.isEnabled = Tapdaq.sharedSession().isConfigLoaded;
-        self.loadVideoBtn.isEnabled = Tapdaq.sharedSession().isConfigLoaded;
-        self.loadRewardedBtn.isEnabled = Tapdaq.sharedSession().isConfigLoaded;
-        self.loadBannerBtn.isEnabled = Tapdaq.sharedSession().isConfigLoaded;
+        self.loadInterstitialBtn.isEnabled = Tapdaq.sharedSession()?.isInitialised() ?? false;
+        self.loadVideoBtn.isEnabled = Tapdaq.sharedSession()?.isInitialised() ?? false;
+        self.loadRewardedBtn.isEnabled = Tapdaq.sharedSession()?.isInitialised() ?? false;
+        self.loadBannerBtn.isEnabled = Tapdaq.sharedSession()?.isInitialised() ?? false;
         
         self.showInterstitialBtn.isEnabled = self.interstitialAdRequest?.isReady() ?? false;
         self.showVideoBtn.isEnabled = self.videoAdRequest?.isReady() ?? false;
         self.showRewardedBtn.isEnabled = self.rewardedAdRequest?.isReady() ?? false;
         
-        self.showBannerBtn.isEnabled = Tapdaq.sharedSession().isBannerReady();
+        self.showBannerBtn.isEnabled = self.adBanner != nil;
     }
     
     fileprivate func log(message: String) {
@@ -102,7 +102,7 @@ class ViewController: UIViewController, TapdaqDelegate {
     }
     
     @IBAction func showInterstitial(sender: UIButton) {
-        self.interstitialAdRequest?.display()
+        Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: TDPTagDefault)
     }
     
     @IBAction func loadVideo(sender: UIButton) {
@@ -110,7 +110,7 @@ class ViewController: UIViewController, TapdaqDelegate {
     }
     
     @IBAction func showVideo(sender: UIButton) {
-        self.videoAdRequest?.display()
+        Tapdaq.sharedSession()?.showVideo(forPlacementTag: TDPTagDefault)
     }
     
     @IBAction func loadRewarded(sender: UIButton) {
@@ -118,11 +118,13 @@ class ViewController: UIViewController, TapdaqDelegate {
     }
 
     @IBAction func showRewarded(sender: UIButton) {
-        self.rewardedAdRequest?.display()
+        Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: TDPTagDefault)
     }
     
     @IBAction func loadBanner(sender: UIButton) {
-        Tapdaq.sharedSession().loadBanner(TDMBannerSize.smartPortrait)
+        Tapdaq.sharedSession()?.loadBanner(with: .standard, completion: { (bannerView) in
+            self.adBanner = bannerView
+        })
     }
     
     @IBAction func showBanner(sender: UIButton) {
@@ -139,11 +141,10 @@ class ViewController: UIViewController, TapdaqDelegate {
             
         } else {
             
-            let isBannerReady = Tapdaq.sharedSession().isBannerReady()
+            let isBannerReady = self.adBanner != nil
             
             if isBannerReady {
                 
-                adBanner = Tapdaq.sharedSession().getBanner()
                 bannerView!.addSubview(adBanner!)
                 bannerView.setNeedsDisplay()
                 
@@ -196,18 +197,17 @@ class ViewController: UIViewController, TapdaqDelegate {
 extension ViewController: TDAdRequestDelegate {
     func didLoad(_ adRequest: TDAdRequest) {
         log(message: "Did load \"\(AdTypeNameFromTDAdTypes(types: adRequest.placement.adTypes))\" - tag: \"\(adRequest.placement.tag ?? "")\"")
-        if let mediationAdRequest = adRequest as? TDMediationAdRequest {
-            switch (mediationAdRequest.placement.adTypes) {
-            case .typeInterstitial:
-                interstitialAdRequest = mediationAdRequest
-            case .typeVideo:
-                videoAdRequest = mediationAdRequest
-            case .typeRewardedVideo:
-                rewardedAdRequest = mediationAdRequest
-            default:
-                break;
-            }
+        switch (adRequest.placement.adTypes) {
+        case .typeInterstitial:
+            interstitialAdRequest = adRequest
+        case .typeVideo:
+            videoAdRequest = adRequest
+        case .typeRewardedVideo:
+            rewardedAdRequest = adRequest
+        default:
+            break;
         }
+        
         updateUI()
     }
     
@@ -224,6 +224,11 @@ extension ViewController: TDDisplayableAdRequestDelegate {
     
     func didDisplay(_ adRequest: TDAdRequest) {
         log(message: "Did display\"\(AdTypeNameFromTDAdTypes(types: adRequest.placement.adTypes))\" - tag: \"\(adRequest.placement.tag ?? "")\"")
+    }
+    
+    func adRequest(_ adRequest: TDAdRequest, didFailToDisplayWithError error: TDError?) {
+        log(message: "Failed to display \"\(AdTypeNameFromTDAdTypes(types: adRequest.placement.adTypes))\" - tag: \"\(adRequest.placement.tag ?? "")\" error: \(error?.localizedDescription ?? "")")
+        updateUI()
     }
     
     func didClose(_ adRequest: TDAdRequest) {

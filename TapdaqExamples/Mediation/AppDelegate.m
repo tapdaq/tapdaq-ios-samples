@@ -21,10 +21,6 @@
     TDProperties *tapdaqProps = [[TDProperties alloc] init];
     [tapdaqProps setLogLevel:TDLogLevelDebug];
     
-    TDPlacement *defaultPlacement = [[TDPlacement alloc] initWithAdTypes:TDAdTypeInterstitial | TDAdTypeVideo | TDAdTypeRewardedVideo
-                                                                   forTag:TDPTagDefault];
-    [tapdaqProps registerPlacement:defaultPlacement];
-    
     [[Tapdaq sharedSession] setApplicationId:kAppId
                                    clientKey:kClientKey
                                   properties:tapdaqProps];

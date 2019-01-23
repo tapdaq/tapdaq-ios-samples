@@ -20,9 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tapdaqProps: TDProperties = TDProperties.init()
         tapdaqProps.isDebugEnabled = true
         
-        let myDefaultTag: TDPlacement = TDPlacement.init(adTypes: [TDAdTypes.typeInterstitial, TDAdTypes.typeVideo, TDAdTypes.typeRewardedVideo], forTag: TDPTagDefault)
-        tapdaqProps.register(myDefaultTag)
-        
         Tapdaq.sharedSession().setApplicationId(kAppId, clientKey: kClientKey, properties: tapdaqProps)
         
         return true

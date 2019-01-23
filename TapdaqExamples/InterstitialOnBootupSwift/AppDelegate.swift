@@ -18,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tapdaqProps: TDProperties = TDProperties.init()
         tapdaqProps.isDebugEnabled = true
         
-        let myDefaultTag: TDPlacement = TDPlacement.init(adTypes: TDAdTypes.typeInterstitial, forTag: TDPTagDefault)
-        tapdaqProps.register(myDefaultTag)
         Tapdaq.sharedSession().delegate = self
         Tapdaq.sharedSession().setApplicationId(kAppId, clientKey: kClientKey, properties: tapdaqProps)
         
@@ -42,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if Tapdaq.sharedSession().isConfigLoaded {
+        if Tapdaq.sharedSession()?.isInitialised() ?? false {
             Tapdaq.sharedSession().loadInterstitial(forPlacementTag: TDPTagDefault)
         }
     }
@@ -67,7 +65,7 @@ extension AppDelegate: TapdaqDelegate {
         Tapdaq.sharedSession().loadInterstitial(forPlacementTag: TDPTagDefault, delegate: self)
     }
     
-    func didFailToLoadConfigWithError(_ error: TDError!) {
+    private func didFailToLoadConfigWithError(_ error: TDError!) {
         log(message: "didFailToLoadConfig()")
     }
 }
@@ -75,9 +73,7 @@ extension AppDelegate: TapdaqDelegate {
 extension AppDelegate: TDAdRequestDelegate {
     func didLoad(_ adRequest: TDAdRequest) {
         log(message: "Did load ad request for placement tag: " + adRequest.placement.tag)
-        if (adRequest.placement.adTypes.contains(.typeInterstitial)) {
-            (adRequest as? TDMediationAdRequest)?.display()
-        }
+        Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: adRequest.placement.tag)
     }
     
     func adRequest(_ adRequest: TDAdRequest, didFailToLoadWithError error: TDError?) {
@@ -92,6 +88,10 @@ extension AppDelegate: TDDisplayableAdRequestDelegate {
     
     func didDisplay(_ adRequest: TDAdRequest) {
         log(message: "Did display ad request for placement tag: " + adRequest.placement.tag)
+    }
+    
+    func adRequest(_ adRequest: TDAdRequest, didFailToDisplayWithError error: TDError?) {
+        log(message: "Failed to display: " + adRequest.placement.tag + " with error: " + (error?.localizedDescription ?? ""))
     }
     
     func didClose(_ adRequest: TDAdRequest) {

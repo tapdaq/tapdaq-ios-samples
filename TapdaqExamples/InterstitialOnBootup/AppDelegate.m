@@ -21,10 +21,6 @@
     TDProperties *tapdaqProps = [[TDProperties alloc] init];
     [tapdaqProps setIsDebugEnabled:YES];
     
-    TDPlacement *defaultPlacement = [[TDPlacement alloc] initWithAdTypes:TDAdTypeInterstitial forTag:TDPTagDefault];
-    [tapdaqProps registerPlacement:defaultPlacement];
-    
-    
     [[Tapdaq sharedSession] setDelegate:self];
     
     [[Tapdaq sharedSession] setApplicationId:kAppId
@@ -49,7 +45,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    if ([[Tapdaq sharedSession] isConfigLoaded]) {
+    if ([[Tapdaq sharedSession] isInitialised]) {
         [[Tapdaq sharedSession] loadInterstitialForPlacementTag:TDPTagDefault delegate:self];
     }
 }
@@ -79,9 +75,7 @@
 
 #pragma mark - TDAdRequestDelegate
 - (void)didLoadAdRequest:(TDAdRequest *)adRequest {
-    if ([adRequest isKindOfClass:[TDMediationAdRequest class]] && adRequest.placement.adTypes & TDAdTypeInterstitial) {
-        [(TDMediationAdRequest *)adRequest display];
-    }
+    [Tapdaq.sharedSession showInterstitialForPlacementTag:TDPTagDefault];
 }
 
 - (void)adRequest:(TDAdRequest *)adRequest didFailToLoadWithError:(TDError *)error {
@@ -96,6 +90,10 @@
 
 - (void)didDisplayAdRequest:(TDAdRequest *)adRequest {
     [self logMessage:[NSString stringWithFormat:@"Did display ad request for tag: %@", adRequest.placement.tag]];
+}
+
+- (void)adRequest:(TDAdRequest *)adRequest didFailToDisplayWithError:(TDError *)error {
+    [self logMessage:[NSString stringWithFormat:@"Failed to display: %@ with error: %@", adRequest.placement.tag, error.localizedDescription]];
 }
 
 - (void)didCloseAdRequest:(TDAdRequest *)adRequest {
