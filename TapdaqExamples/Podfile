@@ -57,24 +57,6 @@ target 'InterstitialOnBootupSwift' do
     interstitial_networks
 end
 
-target 'Mediation' do
-    sdk_dep
-    all_networks
-end
-
-target 'MediationSwift' do
-    sdk_dep
-    all_networks
-end
-
-target 'NativeAds' do
-    sdk_dep
-end
-
-target 'NativeAdsSwift' do
-    sdk_dep
-end
-
 target 'NativeAdsMediation' do
     sdk_dep
     native_networks
@@ -85,10 +67,13 @@ target 'NativeAdsMediationSwift' do
     native_networks
 end
 
-target 'MoreApps' do
+target 'Mediation' do
     sdk_dep
+    all_networks
 end
 
-target 'MoreAppsSwift' do
+target 'MediationSwift' do
     sdk_dep
+    all_networks
 end
+
