@@ -84,6 +84,14 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.buttonLoad.enabled = [[Tapdaq sharedSession] isInitialised];
         self.buttonShow.enabled = [[Tapdaq sharedSession] isInitialised] && [self isCurrentAdTypeReady];
+        
+        if (self.selectedAdType == TDAdTypeOfferwall || self.selectedAdType == TDAdTypeBanner) {
+            self.textFieldPlacementTag.enabled = NO;
+            self.textFieldPlacementTag.text = TDPTagDefault;
+        } else {
+            self.textFieldPlacementTag.enabled = YES;
+            self.textFieldPlacementTag.text = self.placementTag;
+        }
     });
 }
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

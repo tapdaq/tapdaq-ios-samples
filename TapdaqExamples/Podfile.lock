@@ -1,115 +1,115 @@
 PODS:
   - AdColony (3.3.6)
-  - AppLovinSDK (5.1.2)
+  - AppLovinSDK (6.3.0)
   - ChartboostSDK (7.3.0)
-  - FBAudienceNetwork (5.0.2)
+  - FBAudienceNetwork (5.2.0)
   - Google-Mobile-Ads-SDK (7.36.0)
-  - InMobiSDK (7.2.0)
+  - InMobiSDK (7.2.4)
   - IronSourceSDK (6.7.12.0)
   - KiipSDK (3.0.3)
   - MediaBrix (1.8.3.001)
-  - mopub-ios-sdk (5.3.0):
-    - mopub-ios-sdk/MoPubSDK (= 5.3.0)
-  - mopub-ios-sdk/Avid (5.3.0):
+  - mopub-ios-sdk (5.5.0):
+    - mopub-ios-sdk/MoPubSDK (= 5.5.0)
+  - mopub-ios-sdk/Avid (5.5.0):
     - mopub-ios-sdk/Core
-  - mopub-ios-sdk/Core (5.3.0)
-  - mopub-ios-sdk/Moat (5.3.0):
+  - mopub-ios-sdk/Core (5.5.0)
+  - mopub-ios-sdk/Moat (5.5.0):
     - mopub-ios-sdk/Core
-  - mopub-ios-sdk/MoPubSDK (5.3.0):
+  - mopub-ios-sdk/MoPubSDK (5.5.0):
     - mopub-ios-sdk/Avid
     - mopub-ios-sdk/Core
     - mopub-ios-sdk/Moat
   - PlayableAds (2.0.7)
-  - Tapdaq (7.0.0):
-    - Tapdaq/SDK (= 7.0.0)
-  - Tapdaq/AdColony (7.0.0):
+  - Tapdaq (7.1.90):
+    - Tapdaq/SDK (= 7.1.90)
+  - Tapdaq/AdColony (7.1.90):
     - AdColony (= 3.3.6)
     - Tapdaq/AdColonyAdapter
-  - Tapdaq/AdColonyAdapter (7.0.0):
+  - Tapdaq/AdColonyAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/AdMob (7.0.0):
+  - Tapdaq/AdMob (7.1.90):
     - Google-Mobile-Ads-SDK (= 7.36.0)
     - Tapdaq/AdMobAdapter
-  - Tapdaq/AdMobAdapter (7.0.0):
+  - Tapdaq/AdMobAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/AppLovin (7.0.0):
-    - AppLovinSDK (= 5.1.2)
+  - Tapdaq/AppLovin (7.1.90):
+    - AppLovinSDK (= 6.3.0)
     - Tapdaq/AppLovinAdapter
-  - Tapdaq/AppLovinAdapter (7.0.0):
+  - Tapdaq/AppLovinAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/Chartboost (7.0.0):
+  - Tapdaq/Chartboost (7.1.90):
     - ChartboostSDK (= 7.3.0)
     - Tapdaq/ChartboostAdapter
-  - Tapdaq/ChartboostAdapter (7.0.0):
+  - Tapdaq/ChartboostAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/FAN (7.0.0):
-    - FBAudienceNetwork (= 5.0.2)
+  - Tapdaq/FAN (7.1.90):
+    - FBAudienceNetwork (= 5.2.0)
     - Tapdaq/FANAdapter
-  - Tapdaq/FANAdapter (7.0.0):
+  - Tapdaq/FANAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/HyprMx (7.0.0):
+  - Tapdaq/HyprMx (7.1.90):
     - Tapdaq/HyprMxAdapter
-    - TapdaqHyprMXSDK (= 7.0.0)
-  - Tapdaq/HyprMxAdapter (7.0.0):
+    - TapdaqHyprMXSDK (= 7.1.90)
+  - Tapdaq/HyprMxAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/InMobi (7.0.0):
-    - InMobiSDK (= 7.2.0)
+  - Tapdaq/InMobi (7.1.90):
+    - InMobiSDK (= 7.2.4)
     - Tapdaq/InMobiAdapter
-  - Tapdaq/InMobiAdapter (7.0.0):
+  - Tapdaq/InMobiAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/IronSource (7.0.0):
+  - Tapdaq/IronSource (7.1.90):
     - IronSourceSDK (= 6.7.12)
     - Tapdaq/IronSourceAdapter
-  - Tapdaq/IronSourceAdapter (7.0.0):
+  - Tapdaq/IronSourceAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/Kiip (7.0.0):
+  - Tapdaq/Kiip (7.1.90):
     - KiipSDK (= 3.0.3)
     - Tapdaq/KiipAdapter
-  - Tapdaq/KiipAdapter (7.0.0):
+  - Tapdaq/KiipAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/MoPub (7.0.0):
-    - mopub-ios-sdk (= 5.3.0)
+  - Tapdaq/MoPub (7.1.90):
+    - mopub-ios-sdk (= 5.5.0)
     - Tapdaq/MoPubAdapter
-  - Tapdaq/MoPubAdapter (7.0.0):
+  - Tapdaq/MoPubAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/Receptiv (7.0.0):
+  - Tapdaq/Receptiv (7.1.90):
     - MediaBrix (= 1.8.3.001)
     - Tapdaq/ReceptivAdapter
-  - Tapdaq/ReceptivAdapter (7.0.0):
+  - Tapdaq/ReceptivAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/SDK (7.0.0)
-  - Tapdaq/Tapjoy (7.0.0):
+  - Tapdaq/SDK (7.1.90)
+  - Tapdaq/Tapjoy (7.1.90):
     - Tapdaq/TapjoyAdapter
-    - TapjoySDK (= 12.1.0)
-  - Tapdaq/TapjoyAdapter (7.0.0):
+    - TapjoySDK (= 12.2.1)
+  - Tapdaq/TapjoyAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/UnityAds (7.0.0):
+  - Tapdaq/UnityAds (7.1.90):
     - Tapdaq/UnityAdsAdapter
-    - UnityAds (= 2.3.0)
-  - Tapdaq/UnityAdsAdapter (7.0.0):
+    - UnityAds (= 3.0.1)
+  - Tapdaq/UnityAdsAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/Vungle (7.0.0):
+  - Tapdaq/Vungle (7.1.90):
     - Tapdaq/VungleAdapter
-    - VungleSDK-iOS (= 6.2.0)
-  - Tapdaq/VungleAdapter (7.0.0):
+    - VungleSDK-iOS (= 6.3.2)
+  - Tapdaq/VungleAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/YouAppi (7.0.0):
+  - Tapdaq/YouAppi (7.1.90):
     - Tapdaq/YouAppiAdapter
-    - YouAppiMoatSDK (= 4.3.2)
-  - Tapdaq/YouAppiAdapter (7.0.0):
+    - YouAppiMoatSDK (= 4.3.4)
+  - Tapdaq/YouAppiAdapter (7.1.90):
     - Tapdaq/SDK
-  - Tapdaq/ZPlay (7.0.0):
+  - Tapdaq/ZPlay (7.1.90):
     - PlayableAds (= 2.0.7)
     - Tapdaq/ZPlayAdapter
-  - Tapdaq/ZPlayAdapter (7.0.0):
+  - Tapdaq/ZPlayAdapter (7.1.90):
     - Tapdaq/SDK
-  - TapdaqHyprMXSDK (7.0.0):
-    - TapdaqHyprMXSDK/SDK (= 7.0.0)
-  - TapdaqHyprMXSDK/SDK (7.0.0)
-  - TapjoySDK (12.1.0)
-  - UnityAds (2.3.0)
-  - VungleSDK-iOS (6.2.0)
-  - YouAppiMoatSDK (4.3.2)
+  - TapdaqHyprMXSDK (7.1.90):
+    - TapdaqHyprMXSDK/SDK (= 7.1.90)
+  - TapdaqHyprMXSDK/SDK (7.1.90)
+  - TapjoySDK (12.2.1)
+  - UnityAds (3.0.1)
+  - VungleSDK-iOS (6.3.2)
+  - YouAppiMoatSDK (4.3.4)
 
 DEPENDENCIES:
   - Tapdaq
@@ -148,29 +148,29 @@ SPEC REPOS:
     - YouAppiMoatSDK
   https://github.com/mediabrix/mediabrix-cocoapods-spec.git:
     - MediaBrix
-  https://github.com/tapdaq/cocoapods-specs.git:
+  https://github.com/tapdaq/cocoapods.git:
     - Tapdaq
     - TapdaqHyprMXSDK
 
 SPEC CHECKSUMS:
   AdColony: 68473450de30de67154675c3512353a55c8f97cc
-  AppLovinSDK: 5a6c0ab59aaed00da1bc95d54e2065266ab3b379
+  AppLovinSDK: 14ed4815dcf71cfe75ec43ca2ce60cce0652af7d
   ChartboostSDK: 63bbdcad37dd78012acaba1f904e82ddb0eb921d
-  FBAudienceNetwork: 2fd6739135cc15b3260c4d25b6cc7d414afdb2e8
+  FBAudienceNetwork: 43eadf7ab00fe58a66ca52171de324e25a0a4a1c
   Google-Mobile-Ads-SDK: 5bb4d2cea811842e104a24780caef63b4808e1bd
-  InMobiSDK: a19f867abc7bc5b9e5ee9635493c8406c3f44690
+  InMobiSDK: f15ac7c70e433de356631665187ee924fe6712dc
   IronSourceSDK: 1c8cde15920ec0f1482d05b9acdd4a3f387b2ce3
   KiipSDK: 41d9155e6de26c16acae855e6b5e96520fe246be
   MediaBrix: bf80998702b34c10bf05e62882b3d45f9320581d
-  mopub-ios-sdk: 995d0cf8bbb5f9e81389ac981c2f1555dc77e84f
+  mopub-ios-sdk: 937b82dd76d8a396ba6a22ae005a1e24c61bf28b
   PlayableAds: c0476d0f911842994ec5c45bff5c7c53c32282f8
-  Tapdaq: bcb8d3cfa789eb828fee3a52866f03d550b93cfd
-  TapdaqHyprMXSDK: 6b6e4b86ff1bdf38e6c7470ea29e8f9d6fa19600
-  TapjoySDK: 0ce8155f1687413d58d8eb372574634f1cdc7471
-  UnityAds: 6c502763383f8c8983a12118cc213193a0af744f
-  VungleSDK-iOS: a8665f4e826ad688135429f4618df4235f8738c7
-  YouAppiMoatSDK: f69d8016feda5cb3baadad2410b7f3a96b8e71df
+  Tapdaq: d6c30939ee87ee9b5ac480098753a590a0eec997
+  TapdaqHyprMXSDK: a352618d3bb00d718491ef4ebf2cd17c2dc645bd
+  TapjoySDK: eb0487f758130d99c8f0f0ad20218637d69513fc
+  UnityAds: c225a5ec48ad8d56f1d8bf72d5c49f5e211a1501
+  VungleSDK-iOS: 69a7f407b60281d2954ffc5eeeac349fbfed51d6
+  YouAppiMoatSDK: 1735da9db320ff52b952604b4fa3ff4f004b56fe
 
-PODFILE CHECKSUM: 605ae0e17c0c4f96884603d22a91cfc9b9ef9f32
+PODFILE CHECKSUM: 1b24cd9a25a6313cddc4ed81a2abda5f97a1867e
 
 COCOAPODS: 1.5.3
