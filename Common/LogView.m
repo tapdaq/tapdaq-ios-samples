@@ -123,7 +123,7 @@ NSString *const LogViewCellIdentifier = @"LogViewCellIdentifier";
     LogEntry *entry = self.logEntries[indexPath.row];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.locale = NSLocale.currentLocale;
-    formatter.dateFormat = @"HH:mm:ss.S";
+    formatter.dateFormat = @"HH:mm:ss.SS";
     cell.labelMessage.text = [NSString stringWithFormat:@"%@: %@",[formatter stringFromDate:entry.date], entry.message];
     
     return cell;
