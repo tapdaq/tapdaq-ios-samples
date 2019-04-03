@@ -58,16 +58,19 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 {
     BOOL isInitialised = Tapdaq.sharedSession.isInitialised;
     
-    self.loadInterstitialBtn.enabled = isInitialised;
-    self.loadVideoBtn.enabled = isInitialised;
-    self.loadRewardedBtn.enabled = isInitialised;
-    self.loadBannerBtn.enabled = isInitialised;
-    
-    self.showInterstitialBtn.enabled = self.interstitialAdRequest.isReady;
-    self.showVideoBtn.enabled = self.videoAdRequest.isReady;
-    self.showRewardedBtn.enabled = self.rewardedAdRequest.isReady;
-    
-    self.showBannerBtn.enabled = self.adBanner != nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.loadInterstitialBtn.enabled = isInitialised;
+        self.loadVideoBtn.enabled = isInitialised;
+        self.loadRewardedBtn.enabled = isInitialised;
+        self.loadBannerBtn.enabled = isInitialised;
+        
+        self.showInterstitialBtn.enabled = self.interstitialAdRequest.isReady;
+        self.showVideoBtn.enabled = self.videoAdRequest.isReady;
+        self.showRewardedBtn.enabled = self.rewardedAdRequest.isReady;
+        
+        self.showBannerBtn.enabled = self.adBanner != nil;
+    });
+   
 }
 
 #pragma mark - Target action 
@@ -133,11 +136,14 @@ static NSString *const kRewardPayloadKey = @"MyRewardPayload";
 
 - (void)logMessage:(NSString *)message
 {
-    NSString *text = [self.textView text];
-    NSString *textAddition = [NSString stringWithFormat:@"%@\n\n%@", message, text];
-    [self.textView setText:textAddition];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *text = [self.textView text];
+        NSString *textAddition = [NSString stringWithFormat:@"%@\n\n%@", message, text];
+        [self.textView setText:textAddition];
+        
+        NSLog(@"Mediation App: %@", message);
+    });
     
-    NSLog(@"Mediation App: %@", message);
 }
 
 - (void)updateRewardUI

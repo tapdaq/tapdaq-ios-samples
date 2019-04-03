@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0156D04821888A1B001EC14B /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0156D04321887E36001EC14B /* WatchConnectivity.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		0156D04921888A25001EC14B /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0156D04321887E36001EC14B /* WatchConnectivity.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		0A46E1DF2254CE2C0066EDE1 /* MediationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46E1DE2254CE2C0066EDE1 /* MediationViewController.m */; };
+		0A46E1E22254EFCB0066EDE1 /* LogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46E1E12254EFCB0066EDE1 /* LogView.m */; };
+		0A46E1E32254EFCB0066EDE1 /* LogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46E1E12254EFCB0066EDE1 /* LogView.m */; };
 		0AB17086216610BF00571322 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AB17084216610BF00571322 /* Main.storyboard */; };
 		0AB17088216610C100571322 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AB17087216610C100571322 /* Assets.xcassets */; };
 		0AB1708B216610C100571322 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AB17089216610C100571322 /* LaunchScreen.storyboard */; };
@@ -54,6 +57,10 @@
 		0156D04321887E36001EC14B /* WatchConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchConnectivity.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/WatchConnectivity.framework; sourceTree = DEVELOPER_DIR; };
 		0156D04521887F85001EC14B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		0290B830F9C12F6A03465FC9 /* Pods-InterstitialOnBootupSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InterstitialOnBootupSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-InterstitialOnBootupSwift/Pods-InterstitialOnBootupSwift.release.xcconfig"; sourceTree = "<group>"; };
+		0A46E1DD2254CE2C0066EDE1 /* MediationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediationViewController.h; sourceTree = "<group>"; };
+		0A46E1DE2254CE2C0066EDE1 /* MediationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediationViewController.m; sourceTree = "<group>"; };
+		0A46E1E02254EFCB0066EDE1 /* LogView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogView.h; sourceTree = "<group>"; };
+		0A46E1E12254EFCB0066EDE1 /* LogView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogView.m; sourceTree = "<group>"; };
 		0AB1707B216610BF00571322 /* Mediation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mediation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB17085216610BF00571322 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0AB17087216610C100571322 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -234,6 +241,8 @@
 				0AB17089216610C100571322 /* LaunchScreen.storyboard */,
 				0AB1708C216610C100571322 /* Info.plist */,
 				0AB1708D216610C100571322 /* main.m */,
+				0A46E1DD2254CE2C0066EDE1 /* MediationViewController.h */,
+				0A46E1DE2254CE2C0066EDE1 /* MediationViewController.m */,
 			);
 			path = Mediation;
 			sourceTree = "<group>";
@@ -286,6 +295,8 @@
 			children = (
 				0ABCFB022166560D00313044 /* Bridging-Header.h */,
 				0ABCFAF1216654CC00313044 /* Constants.h */,
+				0A46E1E02254EFCB0066EDE1 /* LogView.h */,
+				0A46E1E12254EFCB0066EDE1 /* LogView.m */,
 			);
 			name = Common;
 			path = ../Common;
@@ -628,8 +639,8 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-MediationSwift/Pods-MediationSwift-resources.sh",
 				"${PODS_ROOT}/KiipSDK/Kiip/Resource/KiipSDKResources.bundle",
 				"${PODS_ROOT}/PlayableAds/Resources/ZplayMuteListener.bundle",
-				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.1.0/Libraries/Tapjoy.embeddedframework/Resources/TapjoyResources.bundle",
-				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.1.0/Libraries/Tapjoy.embeddedframework/Tapjoy.framework/Versions/A/Resources/TapjoyResources.bundle",
+				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.2.1/Libraries/Tapjoy.embeddedframework/Resources/TapjoyResources.bundle",
+				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.2.1/Libraries/Tapjoy.embeddedframework/Tapjoy.framework/Versions/A/Resources/TapjoyResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -761,8 +772,8 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Mediation/Pods-Mediation-resources.sh",
 				"${PODS_ROOT}/KiipSDK/Kiip/Resource/KiipSDKResources.bundle",
 				"${PODS_ROOT}/PlayableAds/Resources/ZplayMuteListener.bundle",
-				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.1.0/Libraries/Tapjoy.embeddedframework/Resources/TapjoyResources.bundle",
-				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.1.0/Libraries/Tapjoy.embeddedframework/Tapjoy.framework/Versions/A/Resources/TapjoyResources.bundle",
+				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.2.1/Libraries/Tapjoy.embeddedframework/Resources/TapjoyResources.bundle",
+				"${PODS_ROOT}/TapjoySDK/TapjoySDK_iOS_v12.2.1/Libraries/Tapjoy.embeddedframework/Tapjoy.framework/Versions/A/Resources/TapjoyResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -875,6 +886,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AB170972166111B00571322 /* ViewController.m in Sources */,
+				0A46E1E22254EFCB0066EDE1 /* LogView.m in Sources */,
+				0A46E1DF2254CE2C0066EDE1 /* MediationViewController.m in Sources */,
 				0AB170962166111B00571322 /* AppDelegate.m in Sources */,
 				0AB1708E216610C100571322 /* main.m in Sources */,
 			);
@@ -896,6 +909,7 @@
 			files = (
 				0ABCFABD2166530A00313044 /* ViewController.swift in Sources */,
 				0ABCFABB2166530A00313044 /* AppDelegate.swift in Sources */,
+				0A46E1E32254EFCB0066EDE1 /* LogView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
