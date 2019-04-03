@@ -125,6 +125,15 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 }
 
 - (void)loadCurrentAdType {
+    if (self.placementTag.length == 0) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:@"Placement Tag cannot be empty." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [alertController dismissViewControllerAnimated:YES completion:nil];
+        }];
+        [alertController addAction:closeAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
     [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
     switch (self.selectedAdType) {
         case TDAdTypeInterstitial: {
@@ -225,7 +234,6 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 #pragma mark TDRewardedVideoAdRequestDelegate
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didValidateReward:(TDReward * _Nonnull)reward {
     [self.logView log:@"Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? @"TRUE" : @"FALSE", reward.hashedUserId, reward.customJson];
-    
 }
 
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToValidateReward:(TDReward * _Nonnull)reward {
