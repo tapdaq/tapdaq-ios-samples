@@ -7,5 +7,5 @@
 
 @class NSString;
 
-static NSString *const kAppId = @"58d11456162f1b3998b7709b";
-static NSString *const kClientKey = @"3564a57a-9391-485b-ac01-83efea9b0599";
+static NSString *const kAppId = <APP_ID>;
+static NSString *const kClientKey = <CLIENT_KEY>;
