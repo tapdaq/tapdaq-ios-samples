@@ -8,10 +8,8 @@
 #import "MediationViewController.h"
 #import "Constants.h"
 #import "LogView.h"
+#import "TDNativeAdView.h"
 #import <Tapdaq/Tapdaq.h>
-
-
-
 
 NSString *NSStringFromAdType(TDAdTypes adType) {
     switch (adType) {
@@ -42,9 +40,12 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 @property (weak, nonatomic) IBOutlet UIButton *buttonLoad;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShow;
 @property (weak, nonatomic) IBOutlet LogView *logView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewAdHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *viewBannerContainer;
 // Data
 @property (copy, nonatomic) NSArray *adTypes;
-
+@property (strong, nonatomic) UIView *bannerView;
+@property (strong, nonatomic) TDMediatedNativeAd *nativeAd;
 // State
 @property (assign, nonatomic) TDAdTypes selectedAdType;
 @property (strong, nonatomic) NSString *placementTag;
@@ -82,9 +83,10 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 
 - (void)update {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.buttonLoad.enabled = [[Tapdaq sharedSession] isInitialised];
+        [self.view layoutIfNeeded];
         self.buttonShow.enabled = [[Tapdaq sharedSession] isInitialised] && [self isCurrentAdTypeReady];
-        
+        BOOL isLoadEnabled = [[Tapdaq sharedSession] isInitialised];
+
         if (self.selectedAdType == TDAdTypeOfferwall || self.selectedAdType == TDAdTypeBanner) {
             self.textFieldPlacementTag.enabled = NO;
             self.textFieldPlacementTag.text = TDPTagDefault;
@@ -92,6 +94,17 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             self.textFieldPlacementTag.enabled = YES;
             self.textFieldPlacementTag.text = self.placementTag;
         }
+        
+        if (self.selectedAdType == TDAdTypeBanner || self.selectedAdType == TDAdTypeMediatedNative) {
+            if (self.viewBannerContainer.subviews.count == 0) {
+                isLoadEnabled = isLoadEnabled && YES;
+                [self.buttonShow setTitle:@"Show" forState:UIControlStateNormal];
+            } else {
+                isLoadEnabled = NO;
+                [self.buttonShow setTitle:@"Hide" forState:UIControlStateNormal];
+            }
+        }
+        self.buttonLoad.enabled = isLoadEnabled;
     });
 }
 
@@ -106,6 +119,7 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     properties.logLevel = TDLogLevelDebug;
     Tapdaq.sharedSession.delegate = self;
     [Tapdaq.sharedSession setApplicationId:kAppId clientKey:kClientKey properties:properties];
+    [self.logView log:@"Loading config for:\n    App ID: %@\n    Client Key: %@", kAppId, kClientKey];
 }
 
 - (BOOL)isCurrentAdTypeReady {
@@ -117,8 +131,11 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
         case TDAdTypeRewardedVideo:
             return [Tapdaq.sharedSession isRewardedVideoReadyForPlacementTag:self.placementTag];
         case TDAdTypeBanner:
+            return self.bannerView != nil;
         case TDAdTypeOfferwall:
+            return [Tapdaq.sharedSession isOfferwallReady];
         case TDAdTypeMediatedNative:
+            return self.nativeAd != nil;
         default:
             return NO;
     }
@@ -149,12 +166,19 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             break;
         }
         case TDAdTypeBanner: {
+            [Tapdaq.sharedSession loadBannerWithSize:TDMBannerStandard completion:^(UIView *newBannerView) {
+                self.bannerView = newBannerView;
+                [self.logView log:@"Did load Banner"];
+                [self update];
+            }];
             break;
         }
         case TDAdTypeOfferwall: {
+            [Tapdaq.sharedSession loadOfferwallWithDelegate:self];
             break;
         }
         case TDAdTypeMediatedNative: {
+            [Tapdaq.sharedSession loadNativeAdInViewController:self placementTag:self.placementTag options:TDMediatedNativeAdOptionsAdChoicesTopRight delegate:self];
             break;
         }
         default:
@@ -163,7 +187,8 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 }
 
 - (void)showCurrentAdType {
-    [self.logView log:@"Showing %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
+    NSString *logMessage = [NSString stringWithFormat:@"Showing %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
+    
     switch (self.selectedAdType) {
         case TDAdTypeInterstitial: {
             [Tapdaq.sharedSession showInterstitialForPlacementTag:self.placementTag];
@@ -174,16 +199,61 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             break;
         }
         case TDAdTypeRewardedVideo: {
-            [Tapdaq.sharedSession showRewardedVideoForPlacementTag:self.placementTag hashedUserId:@"hashed_user_id"];
+            [Tapdaq.sharedSession showRewardedVideoForPlacementTag:self.placementTag hashedUserId:@"mediation_sample_user_id"];
             break;
         }
         case TDAdTypeOfferwall: {
             [Tapdaq.sharedSession showOfferwall];
             break;
         }
+        case TDAdTypeBanner: {
+            if (self.bannerView != nil && self.viewBannerContainer.subviews.count == 0) {
+                [self showAdView:self.bannerView];
+            } else {
+                logMessage = nil;
+                self.bannerView = nil;
+                [self hideAdView];
+            }
+            break;
+        }
+        case TDAdTypeMediatedNative: {
+            if (self.nativeAd != nil && self.viewBannerContainer.subviews.count == 0) {
+                TDNativeAdView *adView = [[TDNativeAdView alloc] init];
+                adView.nativeAd = self.nativeAd;
+                [self showAdView:adView];
+                [self.nativeAd setAdView:adView];
+                [self.nativeAd trackImpression];
+            } else {
+                logMessage = nil;
+                self.nativeAd = nil;
+                [self hideAdView];
+            }
+            break;
+        }
         default:
             break;
     }
+    [self.logView log:logMessage];
+}
+
+- (void)showAdView:(UIView *)adView {
+    [self.viewBannerContainer addSubview:adView];
+    adView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.viewAdHeightConstraint.constant = CGRectGetHeight(adView.frame) == 0 ? 250 : CGRectGetHeight(adView.frame);
+    id views = @{ @"adView" : adView };
+    id verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[adView]|" options:0 metrics:nil views:views];
+    id horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[adView]|" options:0 metrics:nil views:views];
+    [self.viewBannerContainer addConstraints:verticalConstraints];
+    [self.viewBannerContainer addConstraints:horizontalConstraints];
+    [self update];
+}
+
+- (void)hideAdView {
+    if (self.viewBannerContainer.subviews.count == 0 ) { return; }
+    [self.logView log:@"Hidden %@ for tag %@", NSStringFromAdType(self.selectedAdType), self.placementTag];
+    self.viewAdHeightConstraint.constant = 0;
+    for (UIView *subview in self.viewBannerContainer.subviews) { [subview removeFromSuperview]; }
+    [self update];
 }
 
 #pragma mark - TapdaqDelegate
@@ -201,11 +271,18 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 
 - (void)didLoadAdRequest:(TDAdRequest * _Nonnull)adRequest {
     [self.logView log:@"Did load ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag];
+    if ([adRequest isKindOfClass:TDNativeAdRequest.class]) {
+        self.nativeAd = [(TDNativeAdRequest *)adRequest nativeAd];
+    }
     [self update];
 }
 
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToLoadWithError:(TDError * _Nullable)error {
     [self.logView log:@"Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, error.localizedDescription];
+}
+
+- (void)didRefreshBanner {
+    [self.logView log:@"Did refresh banner"];
 }
 
 #pragma mark TDDisplayableAdRequestDelegate
@@ -283,6 +360,9 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == self.textFieldAdUnit) {
         [self.textFieldDummy becomeFirstResponder];
+        self.nativeAd = nil;
+        self.bannerView = nil;
+        [self hideAdView];
         return NO;
     }
     return YES;

@@ -233,7 +233,7 @@
                                 <rect key="frame" x="0.0" y="225" width="375" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="250" id="j4A-Dm-bKM"/>
+                                    <constraint firstAttribute="height" id="j4A-Dm-bKM"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tapdaq SDK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FK6-kD-Hha">
@@ -288,6 +288,8 @@
                         <outlet property="logView" destination="ONA-d4-AWR" id="XV0-pE-zOp"/>
                         <outlet property="textFieldAdUnit" destination="ZSm-08-Qre" id="Cg0-XA-RyJ"/>
                         <outlet property="textFieldPlacementTag" destination="OWk-WD-YhF" id="Jci-ua-abu"/>
+                        <outlet property="viewAdHeightConstraint" destination="j4A-Dm-bKM" id="fKS-dx-eKL"/>
+                        <outlet property="viewBannerContainer" destination="CKl-1U-rw3" id="Wuw-Nd-Kje"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8r5-cl-Uef" userLabel="First Responder" sceneMemberID="firstResponder"/>

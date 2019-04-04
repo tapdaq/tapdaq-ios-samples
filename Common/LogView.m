@@ -72,6 +72,7 @@ NSString *const LogViewCellIdentifier = @"LogViewCellIdentifier";
 }
 
 - (void)log:(NSString *)format, ... {
+    if (format == nil) { return; }
     va_list args;
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
