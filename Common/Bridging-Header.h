@@ -8,3 +8,4 @@
 #import <Tapdaq/Tapdaq.h>
 #import "Constants.h"
 #import "LogView.h"
+#import "TDNativeAdView.h"

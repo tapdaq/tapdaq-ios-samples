@@ -17,11 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let tapdaqProps: TDProperties = TDProperties.init()
-        tapdaqProps.isDebugEnabled = true
-        
-        Tapdaq.sharedSession().setApplicationId(kAppId, clientKey: kClientKey, properties: tapdaqProps)
-        
         return true
     }
 

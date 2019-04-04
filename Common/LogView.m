@@ -72,11 +72,15 @@ NSString *const LogViewCellIdentifier = @"LogViewCellIdentifier";
 }
 
 - (void)log:(NSString *)format, ... {
+    va_list ap;
+    va_start (ap, format);
+    [self log:format args:ap];
+    va_end (ap);
+}
+
+- (void)log:(NSString *)format args:(va_list)args {
     if (format == nil) { return; }
-    va_list args;
-    va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
-    va_end(args);
     LogEntry *entry = [[LogEntry alloc] init];
     entry.message = message;
     entry.date = NSDate.date;
@@ -91,7 +95,6 @@ NSString *const LogViewCellIdentifier = @"LogViewCellIdentifier";
             [self.tableView scrollToRowAtIndexPath:bottomMostIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     });
-   
 }
 
 - (void)setup {

@@ -30,7 +30,7 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     }
 }
 
-@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, UITextFieldDelegate, UITextPasteDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 // View
 @property (weak, nonatomic) IBOutlet UILabel *labelVersion;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldAdUnit;
@@ -267,6 +267,10 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     [self update];
 }
 
+- (void)didRefreshBanner {
+    [self.logView log:@"Did refresh banner"];
+}
+
 #pragma mark - TDAdRequestDelegate
 
 - (void)didLoadAdRequest:(TDAdRequest * _Nonnull)adRequest {
@@ -279,10 +283,6 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToLoadWithError:(TDError * _Nullable)error {
     [self.logView log:@"Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, error.localizedDescription];
-}
-
-- (void)didRefreshBanner {
-    [self.logView log:@"Did refresh banner"];
 }
 
 #pragma mark TDDisplayableAdRequestDelegate
