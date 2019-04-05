@@ -15,6 +15,7 @@ extension LogView {
         }
     }
 }
+
 func NSStringFromAdType(_ adType: TDAdTypes) -> String {
     switch adType {
     case .typeInterstitial:
@@ -69,6 +70,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     var placementTag: String = TDPTagDefault
     
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()

@@ -35,17 +35,6 @@
 		0ABCFAE62166549A00313044 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFAE42166549A00313044 /* Main.storyboard */; };
 		0ABCFAE82166549B00313044 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFAE72166549B00313044 /* Assets.xcassets */; };
 		0ABCFAEB2166549B00313044 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFAE92166549B00313044 /* LaunchScreen.storyboard */; };
-		0ABCFB3C2166647700313044 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCFB3B2166647700313044 /* AppDelegate.m */; };
-		0ABCFB3F2166647700313044 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCFB3E2166647700313044 /* ViewController.m */; };
-		0ABCFB422166647700313044 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB402166647700313044 /* Main.storyboard */; };
-		0ABCFB442166647800313044 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB432166647800313044 /* Assets.xcassets */; };
-		0ABCFB472166647800313044 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB452166647800313044 /* LaunchScreen.storyboard */; };
-		0ABCFB4A2166647800313044 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCFB492166647800313044 /* main.m */; };
-		0ABCFB55216664B900313044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCFB54216664B900313044 /* AppDelegate.swift */; };
-		0ABCFB57216664B900313044 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCFB56216664B900313044 /* ViewController.swift */; };
-		0ABCFB5A216664B900313044 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB58216664B900313044 /* Main.storyboard */; };
-		0ABCFB5C216664BA00313044 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB5B216664BA00313044 /* Assets.xcassets */; };
-		0ABCFB5F216664BA00313044 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ABCFB5D216664BA00313044 /* LaunchScreen.storyboard */; };
 		195FFF81246C3F409559613A /* Pods_InterstitialOnBootupSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270C2C18122224F917539CC8 /* Pods_InterstitialOnBootupSwift.framework */; };
 		73BE07BB5F2D6F5521528756 /* Pods_MediationSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0EC645AC02A7B8E98A771B /* Pods_MediationSwift.framework */; };
 		829D5719883EAD8B11B8A417 /* Pods_NativeAdsMediation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B09AE9294A99E0763D44C0 /* Pods_NativeAdsMediation.framework */; };
@@ -99,22 +88,7 @@
 		0ABCFAF1216654CC00313044 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		0ABCFB022166560D00313044 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "../Common/Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		0ABCFB382166647600313044 /* NativeAdsMediation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativeAdsMediation.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0ABCFB3A2166647600313044 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0ABCFB3B2166647700313044 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0ABCFB3D2166647700313044 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0ABCFB3E2166647700313044 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		0ABCFB412166647700313044 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		0ABCFB432166647800313044 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0ABCFB462166647800313044 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		0ABCFB482166647800313044 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0ABCFB492166647800313044 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ABCFB52216664B900313044 /* NativeAdsMediationSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativeAdsMediationSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0ABCFB54216664B900313044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0ABCFB56216664B900313044 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0ABCFB59216664B900313044 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		0ABCFB5B216664BA00313044 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0ABCFB5E216664BA00313044 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		0ABCFB60216664BA00313044 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		145E763D2332F93C36D1E303 /* Pods_Mediation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mediation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2401CF41172C25BE33B77793 /* Pods-NativeAdsMediation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NativeAdsMediation.release.xcconfig"; path = "Pods/Target Support Files/Pods-NativeAdsMediation/Pods-NativeAdsMediation.release.xcconfig"; sourceTree = "<group>"; };
 		270C2C18122224F917539CC8 /* Pods_InterstitialOnBootupSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InterstitialOnBootupSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,8 +171,6 @@
 				0ABCFADF2166549A00313044 /* InterstitialOnBootupSwift */,
 				0AB1707D216610BF00571322 /* Mediation */,
 				0ABCFAB92166530A00313044 /* MediationSwift */,
-				0ABCFB392166647600313044 /* NativeAdsMediation */,
-				0ABCFB53216664B900313044 /* NativeAdsMediationSwift */,
 				0AB1707C216610BF00571322 /* Products */,
 				3323BD60CCCCB8C5C7946D63 /* Frameworks */,
 				4356E209DB62199B57C60F6E /* Pods */,
@@ -289,35 +261,6 @@
 			);
 			name = Common;
 			path = ../Common;
-			sourceTree = "<group>";
-		};
-		0ABCFB392166647600313044 /* NativeAdsMediation */ = {
-			isa = PBXGroup;
-			children = (
-				0ABCFB3A2166647600313044 /* AppDelegate.h */,
-				0ABCFB3B2166647700313044 /* AppDelegate.m */,
-				0ABCFB3D2166647700313044 /* ViewController.h */,
-				0ABCFB3E2166647700313044 /* ViewController.m */,
-				0ABCFB402166647700313044 /* Main.storyboard */,
-				0ABCFB432166647800313044 /* Assets.xcassets */,
-				0ABCFB452166647800313044 /* LaunchScreen.storyboard */,
-				0ABCFB482166647800313044 /* Info.plist */,
-				0ABCFB492166647800313044 /* main.m */,
-			);
-			path = NativeAdsMediation;
-			sourceTree = "<group>";
-		};
-		0ABCFB53216664B900313044 /* NativeAdsMediationSwift */ = {
-			isa = PBXGroup;
-			children = (
-				0ABCFB54216664B900313044 /* AppDelegate.swift */,
-				0ABCFB56216664B900313044 /* ViewController.swift */,
-				0ABCFB58216664B900313044 /* Main.storyboard */,
-				0ABCFB5B216664BA00313044 /* Assets.xcassets */,
-				0ABCFB5D216664BA00313044 /* LaunchScreen.storyboard */,
-				0ABCFB60216664BA00313044 /* Info.plist */,
-			);
-			path = NativeAdsMediationSwift;
 			sourceTree = "<group>";
 		};
 		3323BD60CCCCB8C5C7946D63 /* Frameworks */ = {
@@ -570,9 +513,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ABCFB472166647800313044 /* LaunchScreen.storyboard in Resources */,
-				0ABCFB442166647800313044 /* Assets.xcassets in Resources */,
-				0ABCFB422166647700313044 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,9 +520,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ABCFB5F216664BA00313044 /* LaunchScreen.storyboard in Resources */,
-				0ABCFB5C216664BA00313044 /* Assets.xcassets in Resources */,
-				0ABCFB5A216664B900313044 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,9 +841,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ABCFB3F2166647700313044 /* ViewController.m in Sources */,
-				0ABCFB4A2166647800313044 /* main.m in Sources */,
-				0ABCFB3C2166647700313044 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -914,8 +848,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ABCFB57216664B900313044 /* ViewController.swift in Sources */,
-				0ABCFB55216664B900313044 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,38 +914,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0ABCFAEA2166549B00313044 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		0ABCFB402166647700313044 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0ABCFB412166647700313044 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0ABCFB452166647800313044 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0ABCFB462166647800313044 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		0ABCFB58216664B900313044 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0ABCFB59216664B900313044 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0ABCFB5D216664BA00313044 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0ABCFB5E216664BA00313044 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
