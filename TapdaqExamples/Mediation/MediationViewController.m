@@ -30,23 +30,51 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     }
 }
 
+NSString *NSStringFromBannerSize(TDMBannerSize size) {
+    switch (size) {
+        case TDMBannerStandard:
+            return @"Standard";
+        case TDMBannerMedium:
+            return @"Medium";
+        case TDMBannerLarge:
+            return @"Large";
+        case TDMBannerSmartPortrait:
+            return @"Smart Portrait";
+        case TDMBannerSmartLandscape:
+            return @"Smart Landscape";
+        case TDMBannerLeaderboard:
+            return @"Leaderboard";
+        case TDMBannerSkyscraper:
+            return @"Skyscraper";
+        case TDMBannerFull:
+            return @"Full";
+        default:
+            return @"Unknown";
+    }
+}
+
 @interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 // View
 @property (weak, nonatomic) IBOutlet UILabel *labelVersion;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldAdUnit;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldPlacementTag;
 @property (strong, nonatomic) UITextField *textFieldDummy;
+@property (strong, nonatomic) UITextField *textFieldBannerSizeDummy;
 @property (strong, nonatomic) UIPickerView *pickerViewAdUnit;
+@property (strong, nonatomic) UIPickerView *pickerViewBannerSize;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLoad;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShow;
 @property (weak, nonatomic) IBOutlet LogView *logView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewAdHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *viewBannerContainer;
+@property (weak, nonatomic) IBOutlet UILabel *labelPlacementTag;
 // Data
 @property (copy, nonatomic) NSArray *adTypes;
+@property (copy, nonatomic) NSArray *bannerSizes;
 @property (strong, nonatomic) UIView *bannerView;
 @property (strong, nonatomic) TDMediatedNativeAd *nativeAd;
 // State
+@property (assign, nonatomic) TDMBannerSize selectedBannerSize;
 @property (assign, nonatomic) TDAdTypes selectedAdType;
 @property (strong, nonatomic) NSString *placementTag;
 @end
@@ -66,8 +94,15 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
                       @(TDAdTypeBanner),
                       @(TDAdTypeOfferwall),
                       @(TDAdTypeMediatedNative) ];
-    
-    
+    self.bannerSizes = @[ @(TDMBannerStandard),
+                          @(TDMBannerSmartPortrait),
+                          @(TDMBannerSmartLandscape),
+                          @(TDMBannerMedium),
+                          @(TDMBannerLarge),
+                          @(TDMBannerLeaderboard),
+                          @(TDMBannerFull),
+                          @(TDMBannerSkyscraper) ];
+    self.selectedBannerSize = [self.bannerSizes.firstObject integerValue];
     self.selectedAdType = [self.adTypes.firstObject integerValue];
     self.placementTag = self.textFieldPlacementTag.text = TDPTagDefault;
     
@@ -77,6 +112,14 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
     self.pickerViewAdUnit.dataSource = self;
     self.pickerViewAdUnit.delegate = self;
     self.textFieldDummy.inputView = self.pickerViewAdUnit;
+    
+    self.textFieldBannerSizeDummy = [[UITextField alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:self.textFieldBannerSizeDummy];
+    self.pickerViewBannerSize = [[UIPickerView alloc] initWithFrame:CGRectZero];
+    self.pickerViewBannerSize.dataSource = self;
+    self.pickerViewBannerSize.delegate = self;
+    self.textFieldBannerSizeDummy.inputView = self.pickerViewBannerSize;
+    
     self.labelVersion.text = [NSString stringWithFormat:@"Tapdaq SDK v%@", Tapdaq.sharedSession.sdkVersion];
     [self update];
 }
@@ -88,10 +131,8 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
         BOOL isLoadEnabled = [[Tapdaq sharedSession] isInitialised];
 
         if (self.selectedAdType == TDAdTypeOfferwall || self.selectedAdType == TDAdTypeBanner) {
-            self.textFieldPlacementTag.enabled = NO;
             self.textFieldPlacementTag.text = TDPTagDefault;
         } else {
-            self.textFieldPlacementTag.enabled = YES;
             self.textFieldPlacementTag.text = self.placementTag;
         }
         
@@ -103,6 +144,13 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
                 isLoadEnabled = NO;
                 [self.buttonShow setTitle:@"Hide" forState:UIControlStateNormal];
             }
+        }
+        
+        if (self.selectedAdType == TDAdTypeBanner) {
+            self.labelPlacementTag.text = @"Banner Size:";
+            self.textFieldPlacementTag.text = NSStringFromBannerSize(self.selectedBannerSize);
+        } else {
+            self.labelPlacementTag.text = @"Placement Tag:";
         }
         self.buttonLoad.enabled = isLoadEnabled;
     });
@@ -151,7 +199,10 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
+    if (self.selectedAdType !=  TDAdTypeBanner &&
+        self.selectedAdType !=  TDAdTypeOfferwall) {
+        [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
+    }
     switch (self.selectedAdType) {
         case TDAdTypeInterstitial: {
             [Tapdaq.sharedSession loadInterstitialForPlacementTag:self.placementTag delegate:self];
@@ -166,7 +217,9 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             break;
         }
         case TDAdTypeBanner: {
-            [Tapdaq.sharedSession loadBannerWithSize:TDMBannerStandard completion:^(UIView *newBannerView) {
+            
+            [self.logView log:@"Loading %@ %@ for tag %@...",NSStringFromBannerSize(self.selectedBannerSize), NSStringFromAdType(self.selectedAdType), TDPTagDefault];
+            [Tapdaq.sharedSession loadBannerWithSize:self.selectedBannerSize completion:^(UIView *newBannerView) {
                 self.bannerView = newBannerView;
                 [self.logView log:@"Did load Banner"];
                 [self update];
@@ -174,6 +227,8 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             break;
         }
         case TDAdTypeOfferwall: {
+            
+            [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), TDPTagDefault];
             [Tapdaq.sharedSession loadOfferwallWithDelegate:self];
             break;
         }
@@ -364,13 +419,21 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
         self.bannerView = nil;
         [self hideAdView];
         return NO;
+    } else if (textField == self.textFieldPlacementTag && self.selectedAdType == TDAdTypeBanner) {
+        [self.textFieldBannerSizeDummy becomeFirstResponder];
+        self.nativeAd = nil;
+        self.bannerView = nil;
+        [self hideAdView];
+        return NO;
     }
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (textField == self.textFieldDummy) {
-        [self.pickerViewAdUnit selectRow:[self.adTypes indexOfObject:@(self.selectedAdType)] inComponent:0 animated:NO];
+            [self.pickerViewAdUnit selectRow:[self.adTypes indexOfObject:@(self.selectedAdType)] inComponent:0 animated:NO];
+    } else if (textField == self.textFieldBannerSizeDummy) {
+        [self.pickerViewAdUnit selectRow:[self.bannerSizes indexOfObject:@(self.selectedBannerSize)] inComponent:0 animated:NO];
     }
 }
 
@@ -403,15 +466,25 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView == self.pickerViewBannerSize) {
+        return self.bannerSizes.count;
+    }
     return self.adTypes.count;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView == self.pickerViewBannerSize) {
+        return NSStringFromBannerSize([self.bannerSizes[row] integerValue]);
+    }
     return NSStringFromAdType([self.adTypes[row] integerValue]);
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.selectedAdType = [self.adTypes[row] integerValue];
+    if (pickerView == self.pickerViewBannerSize) {
+        self.selectedBannerSize = [self.bannerSizes[row] integerValue];
+    } else {
+        self.selectedAdType = [self.adTypes[row] integerValue];
+    }
     [self update];
 }
 @end

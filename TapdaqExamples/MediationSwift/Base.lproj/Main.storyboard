@@ -126,6 +126,7 @@
                     <connections>
                         <outlet property="buttonLoad" destination="MEa-WS-mYE" id="uQr-ta-H3T"/>
                         <outlet property="buttonShow" destination="6dn-q9-Mku" id="DKR-Qw-0ow"/>
+                        <outlet property="labelPlacementTag" destination="1X4-vE-X5M" id="OQB-WV-kRq"/>
                         <outlet property="labelVersion" destination="FK6-kD-Hha" id="nuv-6Z-3RY"/>
                         <outlet property="logView" destination="ONA-d4-AWR" id="XV0-pE-zOp"/>
                         <outlet property="textFieldAdUnit" destination="ZSm-08-Qre" id="Cg0-XA-RyJ"/>

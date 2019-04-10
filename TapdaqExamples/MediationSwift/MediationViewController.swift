@@ -35,6 +35,29 @@ func NSStringFromAdType(_ adType: TDAdTypes) -> String {
     }
 }
 
+func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
+    switch bannerSize {
+    case .standard:
+        return "Standard";
+    case .medium:
+        return "Medium";
+    case .large:
+        return "Large";
+    case .smartPortrait:
+        return "Smart Portrait";
+    case .smartLandscape:
+        return "Smart Landscape";
+    case .leaderboard:
+        return "Leaderboard";
+    case .skyscraper:
+        return "SKyscraper";
+    case .full:
+        return "Full";
+    default:
+        return "Unknown";
+    }
+}
+
 class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDOfferwallAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
 
@@ -47,9 +70,12 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     @IBOutlet weak var logView: LogView!
     @IBOutlet weak var viewAdHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewBannerContainer: UIView!
+    @IBOutlet weak var labelPlacementTag: UILabel!
     
     var textFieldDummy: UITextField!
+    var textFieldBannerSizeDummy: UITextField!
     var pickerViewAdUnit: UIPickerView!
+    var pickerViewBannerSize: UIPickerView!
     // Data
     let adTypes: [TDAdTypes] = [ .typeInterstitial,
                                  .typeVideo,
@@ -57,6 +83,14 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                                  .typeBanner,
                                  .typeOfferwall,
                                  .typeMediatedNative ]
+    let bannerSizes: [TDMBannerSize] = [ .standard,
+                                 .smartPortrait,
+                                 .smartLandscape,
+                                 .medium,
+                                 .large,
+                                 .leaderboard,
+                                 .full,
+                                 .skyscraper ]
     var bannerView: UIView? = nil
     var nativeAd: TDMediatedNativeAd? = nil
     
@@ -68,6 +102,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             }
         }
     }
+    var selectedBannerSize: TDMBannerSize!
     var placementTag: String = TDPTagDefault
     
     // MARK: -
@@ -79,12 +114,20 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     func setup() {
         selectedAdType = adTypes.first
+        selectedBannerSize = bannerSizes.first
         textFieldDummy = UITextField(frame: .zero)
         view.addSubview(textFieldDummy)
         pickerViewAdUnit = UIPickerView(frame: .zero)
         pickerViewAdUnit.delegate = self
         pickerViewAdUnit.dataSource = self
         textFieldDummy.inputView = pickerViewAdUnit
+        
+        textFieldBannerSizeDummy = UITextField(frame: .zero)
+        view.addSubview(textFieldBannerSizeDummy)
+        pickerViewBannerSize = UIPickerView(frame: .zero)
+        pickerViewBannerSize.delegate = self
+        pickerViewBannerSize.dataSource = self
+        textFieldBannerSizeDummy.inputView = pickerViewBannerSize
         labelVersion.text = "Tapdaq SDK v" + Tapdaq.sharedSession().sdkVersion;
         
         
@@ -99,10 +142,8 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             
             if (self.selectedAdType == .typeOfferwall ||
                 self.selectedAdType == .typeBanner) {
-                self.textFieldPlacementTag.isEnabled = false
                 self.textFieldPlacementTag.text = TDPTagDefault
             } else {
-                self.textFieldPlacementTag.isEnabled = true
                 self.textFieldPlacementTag.text = self.placementTag
             }
             
@@ -117,7 +158,13 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                     self.buttonShow.setTitle("Hide", for: .normal)
                 }
             }
-            self.buttonLoad.isEnabled = isLoadEnabled
+            if (self.selectedAdType == .typeBanner) {
+                self.labelPlacementTag.text = "Banner Size:"
+                self.textFieldPlacementTag.text = NSStringFromBannerSize(self.selectedBannerSize);
+            } else {
+                self.labelPlacementTag.text = "Placement Tag:"
+            }
+            self.buttonLoad.isEnabled = isLoadEnabled;
         }
     }
     
@@ -164,7 +211,9 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             present(alertController, animated: true, completion: nil)
             return
         }
-        logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag)
+        if selectedAdType != .typeBanner && selectedAdType != .typeOfferwall {
+            logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag)
+        }
         switch selectedAdType {
         case TDAdTypes.typeInterstitial:
             Tapdaq.sharedSession()?.loadInterstitial(forPlacementTag: placementTag, delegate: self)
@@ -173,12 +222,15 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         case TDAdTypes.typeRewardedVideo:
             Tapdaq.sharedSession()?.loadRewardedVideo(forPlacementTag: placementTag, delegate: self)
         case TDAdTypes.typeBanner:
+            logView.log(format:"Loading %@ %@ for tag %@...", NSStringFromBannerSize(selectedBannerSize), NSStringFromAdType(self.selectedAdType), self.placementTag)
+
             Tapdaq.sharedSession()?.loadBanner(with: .standard, completion: { (banner) in
                 self.bannerView = banner
                 self.logView.log(format: "Did load banner")
                 self.update()
             })
         case TDAdTypes.typeOfferwall:
+            logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), TDPTagDefault)
             Tapdaq.sharedSession()?.loadOfferwall(with: self)
         case TDAdTypes.typeMediatedNative:
             Tapdaq.sharedSession()?.loadNativeAd(in: self, placementTag: placementTag, options: .adChoicesTopRight, delegate: self)
@@ -349,6 +401,12 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             bannerView = nil
             hideAdView()
             return false
+        } else if textField === textFieldPlacementTag && selectedAdType == .typeBanner {
+            textFieldBannerSizeDummy.becomeFirstResponder()
+            nativeAd = nil
+            bannerView = nil
+            hideAdView()
+            return false
         }
         return true
     }
@@ -356,6 +414,9 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField === textFieldDummy {
             pickerViewAdUnit.selectRow(adTypes.firstIndex(of: selectedAdType!) ?? 0, inComponent: 0, animated: false)
+        } else if textField === textFieldBannerSizeDummy {
+            pickerViewAdUnit.selectRow(bannerSizes.firstIndex(of: selectedBannerSize!) ?? 0, inComponent: 0, animated: false)
+
         }
     }
     
@@ -389,15 +450,26 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView === pickerViewBannerSize {
+            return bannerSizes.count
+        }
         return adTypes.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView === pickerViewBannerSize {
+            return NSStringFromBannerSize(bannerSizes[row])
+        }
         return NSStringFromAdType(adTypes[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedAdType = self.adTypes[row]
+        if pickerView === pickerViewBannerSize {
+            selectedBannerSize = bannerSizes[row]
+        } else if pickerView === pickerViewAdUnit {
+            
+            selectedAdType = adTypes[row]
+        }
         update()
     }
 }
