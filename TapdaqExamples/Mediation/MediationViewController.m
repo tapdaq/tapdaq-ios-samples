@@ -342,7 +342,15 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
 
 #pragma mark TDDisplayableAdRequestDelegate
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToDisplayWithError:(TDError * _Nullable)error {
-    [self.logView log:@"Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, error.localizedDescription];
+    NSMutableString *errorString = [[NSMutableString alloc] init];
+    [errorString appendString:error.localizedDescription];
+    for (NSString *network in error.subErrors.allKeys) {
+        [errorString appendFormat:@"\n    %@:", network];
+        for (NSError *subError in error.subErrors) {
+            [errorString appendFormat:@"\n      -> %@", subError.localizedDescription];
+        }
+    }
+    [self.logView log:@"Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, errorString];
 }
 
 - (void)willDisplayAdRequest:(TDAdRequest * _Nonnull)adRequest {

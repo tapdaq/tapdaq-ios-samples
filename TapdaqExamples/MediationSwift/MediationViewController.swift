@@ -328,7 +328,20 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     
     func adRequest(_ adRequest: TDAdRequest, didFailToLoadWithError error: TDError?) {
-        logView.log(format: "Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, error?.localizedDescription ?? "")
+        guard let error = error else {
+            logView.log(format: "Did fail to load ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+            return
+        }
+        var errorString = ""
+        errorString += error.localizedDescription
+        for network in error.subErrors.keys {
+            errorString += "\n    \(network):"
+            for subError in error.subErrors[network] ?? [] {
+                errorString += "\n      -> \(subError.localizedDescription)"
+            }
+        }
+        
+        logView.log(format: "Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, errorString)
     }
     
     // MARK: - TDDisplayableAdRequestDelegate
