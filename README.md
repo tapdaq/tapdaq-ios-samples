@@ -23,11 +23,3 @@ Below are demos of each sample app in action. If you run into any issues or ques
 ## Mediation
 
 ![Mediation](https://storage.googleapis.com/tapdaq-site-assets/docs/ios/sample-app_mediation-minimized.gif)
-
-## Native Ads
-
-![Native Ads](https://storage.googleapis.com/tapdaq-site-assets/docs/ios/sample-app_native-ads.gif)
-
-## More Apps
-
-![More Apps](https://storage.googleapis.com/tapdaq-site-assets/docs/ios/sample-app_more-apps.gif)
