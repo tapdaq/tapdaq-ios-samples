@@ -19,7 +19,7 @@ def interstitial_networks
     pod 'Tapdaq/Chartboost'
     pod 'Tapdaq/InMobi'
     pod 'Tapdaq/Kiip'
-    pod 'Tapdaq/YouAppi'
+#    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
 end
 
 def native_networks
@@ -43,7 +43,7 @@ def all_networks
     pod 'Tapdaq/Tapjoy'
     pod 'Tapdaq/UnityAds'
     pod 'Tapdaq/Vungle'
-    pod 'Tapdaq/YouAppi'
+#    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
     pod 'Tapdaq/ZPlay'
 end
 
