@@ -18,12 +18,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    TDProperties *tapdaqProps = [[TDProperties alloc] init];
-    [tapdaqProps setLogLevel:TDLogLevelDebug];
-    
-    [[Tapdaq sharedSession] setApplicationId:kAppId
-                                   clientKey:kClientKey
-                                  properties:tapdaqProps];
     
     return YES;
 }

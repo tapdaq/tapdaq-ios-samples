@@ -21,8 +21,6 @@ NSString *NSStringFromAdType(TDAdTypes adType) {
             return @"Rewarded Video";
         case TDAdTypeBanner:
             return @"Banner";
-        case TDAdTypeOfferwall:
-            return @"Offerwall";
         case TDAdTypeMediatedNative:
             return @"Native";
         default:
@@ -84,7 +82,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
-    [self setupTapdaq];
 }
 
 - (void)setup {
@@ -92,7 +89,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
                       @(TDAdTypeVideo),
                       @(TDAdTypeRewardedVideo),
                       @(TDAdTypeBanner),
-                      @(TDAdTypeOfferwall),
                       @(TDAdTypeMediatedNative) ];
     self.bannerSizes = @[ @(TDMBannerStandard),
                           @(TDMBannerSmartPortrait),
@@ -130,7 +126,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
         self.buttonShow.enabled = [[Tapdaq sharedSession] isInitialised] && [self isCurrentAdTypeReady];
         BOOL isLoadEnabled = [[Tapdaq sharedSession] isInitialised];
 
-        if (self.selectedAdType == TDAdTypeOfferwall || self.selectedAdType == TDAdTypeBanner) {
+        if (self.selectedAdType == TDAdTypeBanner) {
             self.textFieldPlacementTag.text = TDPTagDefault;
         } else {
             self.textFieldPlacementTag.text = self.placementTag;
@@ -163,7 +159,10 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
 
 #pragma mark - Tapdaq
 - (void)setupTapdaq {
-    TDProperties *properties = TDProperties.defaultProperties;
+    TDProperties *properties = [Tapdaq.sharedSession properties];
+    if(properties == nil) {
+        properties = TDProperties.defaultProperties;
+    }
     properties.logLevel = TDLogLevelDebug;
     Tapdaq.sharedSession.delegate = self;
     [Tapdaq.sharedSession setApplicationId:kAppId clientKey:kClientKey properties:properties];
@@ -180,8 +179,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
             return [Tapdaq.sharedSession isRewardedVideoReadyForPlacementTag:self.placementTag];
         case TDAdTypeBanner:
             return self.bannerView != nil;
-        case TDAdTypeOfferwall:
-            return [Tapdaq.sharedSession isOfferwallReady];
         case TDAdTypeMediatedNative:
             return self.nativeAd != nil;
         default:
@@ -199,8 +196,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    if (self.selectedAdType !=  TDAdTypeBanner &&
-        self.selectedAdType !=  TDAdTypeOfferwall) {
+    if (self.selectedAdType != TDAdTypeBanner) {
         [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag];
     }
     switch (self.selectedAdType) {
@@ -226,12 +222,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
             }];
             break;
         }
-        case TDAdTypeOfferwall: {
-            
-            [self.logView log:@"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), TDPTagDefault];
-            [Tapdaq.sharedSession loadOfferwallWithDelegate:self];
-            break;
-        }
         case TDAdTypeMediatedNative: {
             [Tapdaq.sharedSession loadNativeAdInViewController:self placementTag:self.placementTag options:TDMediatedNativeAdOptionsAdChoicesTopRight delegate:self];
             break;
@@ -255,10 +245,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
         }
         case TDAdTypeRewardedVideo: {
             [Tapdaq.sharedSession showRewardedVideoForPlacementTag:self.placementTag hashedUserId:@"mediation_sample_user_id"];
-            break;
-        }
-        case TDAdTypeOfferwall: {
-            [Tapdaq.sharedSession showOfferwall];
             break;
         }
         case TDAdTypeBanner: {
@@ -385,15 +371,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     [self.logView log:@"Did refresh ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag];
 }
 
-#pragma mark TDOfferwallAdRequestDelegate
-- (void)adRequest:(TDAdRequest * _Nonnull)adRequest didReceiveOfferwallCredits:(NSDictionary * _Nullable)creditInfo {
-    [self.logView log:@"Did receive credits ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag];
-}
-
-- (void)didFailToReceiveOfferwallCreditsAdRequest:(TDAdRequest * _Nonnull)adRequest {
-    [self.logView log:@"Did fail to receive credits ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag];
-
-}
 #pragma mark - Getters/Setters
 - (void)setSelectedAdType:(TDAdTypes)selectedAdType {
     _selectedAdType = selectedAdType;
@@ -402,6 +379,9 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
 
 #pragma mark - Actions
 
+- (IBAction)actionButtonInitialiseTapped:(id)sender {
+    [self setupTapdaq];
+}
 #pragma mark Button Debugger
 - (IBAction)actionButtonDebuggerTapped:(id)sender {
     [self.view endEditing:YES];
