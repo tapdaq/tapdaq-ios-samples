@@ -10,41 +10,41 @@ source 'https://github.com/mediabrix/mediabrix-cocoapods-spec.git'
 use_frameworks!
 
 def sdk_dep
-    pod 'Tapdaq'
+    pod 'Tapdaq', '7.2.50'
 end
 
 def interstitial_networks
-    pod 'Tapdaq/AdMob'
-    pod 'Tapdaq/AppLovin'
-    pod 'Tapdaq/Chartboost'
-    pod 'Tapdaq/InMobi'
-    pod 'Tapdaq/Kiip'
-#    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
+    pod 'Tapdaq/AdMob', '7.2.50'
+    pod 'Tapdaq/AppLovin', '7.2.50'
+    pod 'Tapdaq/Chartboost', '7.2.50'
+    pod 'Tapdaq/InMobi', '7.2.50'
+    pod 'Tapdaq/Kiip', '7.2.50'
+    pod 'Tapdaq/YouAppi', '7.2.50' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
 end
 
 def native_networks
-    pod 'Tapdaq/AdMob'
-    pod 'Tapdaq/AppLovin'
-    pod 'Tapdaq/FAN'
+    pod 'Tapdaq/AdMob', '7.2.50'
+    pod 'Tapdaq/AppLovin', '7.2.50'
+    pod 'Tapdaq/FAN', '7.2.50'
 end
 
 def all_networks
-    pod 'Tapdaq/AdColony'
-    pod 'Tapdaq/AdMob'
-    pod 'Tapdaq/AppLovin'
-    pod 'Tapdaq/Chartboost'
-    pod 'Tapdaq/FAN'
-    pod 'Tapdaq/HyprMx'
-    pod 'Tapdaq/InMobi'
-    pod 'Tapdaq/IronSource'
-    pod 'Tapdaq/Kiip'
-    pod 'Tapdaq/MoPub'
-    pod 'Tapdaq/Receptiv'
-    pod 'Tapdaq/Tapjoy'
-    pod 'Tapdaq/UnityAds'
-    pod 'Tapdaq/Vungle'
-#    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
-    pod 'Tapdaq/ZPlay'
+    pod 'Tapdaq/AdColony', '7.2.50'
+    pod 'Tapdaq/AdMob', '7.2.50'
+    pod 'Tapdaq/AppLovin', '7.2.50'
+    pod 'Tapdaq/Chartboost', '7.2.50'
+    pod 'Tapdaq/FAN', '7.2.50'
+    pod 'Tapdaq/HyprMx', '7.2.50'
+    pod 'Tapdaq/InMobi', '7.2.50'
+    pod 'Tapdaq/IronSource', '7.2.50'
+    pod 'Tapdaq/Kiip', '7.2.50'
+    pod 'Tapdaq/MoPub', '7.2.50'
+    pod 'Tapdaq/Receptiv', '7.2.50'
+    pod 'Tapdaq/Tapjoy', '7.2.50'
+    pod 'Tapdaq/UnityAds', '7.2.50'
+    pod 'Tapdaq/Vungle', '7.2.50'
+    pod 'Tapdaq/YouAppi', '7.2.50' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
+    pod 'Tapdaq/ZPlay', '7.2.50'
 end
 
 target 'InterstitialOnBootup' do
