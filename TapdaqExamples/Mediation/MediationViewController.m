@@ -164,6 +164,9 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
         properties = TDProperties.defaultProperties;
     }
     properties.logLevel = TDLogLevelDebug;
+    [properties registerTestDevices:[[TDTestDevices alloc] initWithNetwork:TDMAdMob testDevices:[[NSMutableArray alloc] initWithObjects:kAdMobTestDevice, nil]]];
+    [properties registerTestDevices:[[TDTestDevices alloc] initWithNetwork:TDMFacebookAudienceNetwork testDevices:[[NSMutableArray alloc] initWithObjects:kFANTestDevice, nil]]];
+    
     Tapdaq.sharedSession.delegate = self;
     [Tapdaq.sharedSession setApplicationId:kAppId clientKey:kClientKey properties:properties];
     [self.logView log:@"Loading config for:\n    App ID: %@\n    Client Key: %@", kAppId, kClientKey];
