@@ -9,3 +9,5 @@
 
 static NSString *const kAppId = <APP_ID>;
 static NSString *const kClientKey = <CLIENT_KEY>;
+static NSString *const kAdMobTestDevice = @"";
+static NSString *const kFANTestDevice = @"";

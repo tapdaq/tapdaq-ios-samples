@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TWt-XQ-q9G">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TWt-XQ-q9G">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +18,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Tee-wY-X36"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ei0-7z-d4I">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ad Unit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcO-ae-Agr">
@@ -34,7 +34,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Placement Tag" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OWk-WD-YhF">
-                                <rect key="frame" x="16" y="153" width="343" height="30"/>
+                                <rect key="frame" x="16" y="153" width="288" height="30"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -44,7 +44,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ad Unit" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZSm-08-Qre">
-                                <rect key="frame" x="16" y="90" width="343" height="30"/>
+                                <rect key="frame" x="16" y="90" width="288" height="30"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -54,7 +54,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MEa-WS-mYE">
-                                <rect key="frame" x="16" y="195" width="160.5" height="30"/>
+                                <rect key="frame" x="16" y="195" width="133" height="30"/>
                                 <state key="normal" title="Load"/>
                                 <connections>
                                     <action selector="actionButtonLoadTapped:" destination="TWt-XQ-q9G" eventType="touchUpInside" id="Ef4-aj-gS4"/>
@@ -68,11 +68,11 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ONA-d4-AWR" customClass="LogView">
-                                <rect key="frame" x="16" y="237" width="343" height="418"/>
+                                <rect key="frame" x="16" y="237" width="288" height="319"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKl-1U-rw3">
-                                <rect key="frame" x="0.0" y="225" width="375" height="0.0"/>
+                                <rect key="frame" x="0.0" y="225" width="320" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" id="j4A-Dm-bKM"/>
@@ -85,10 +85,20 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcB-ot-lQL">
-                                <rect key="frame" x="290" y="27.5" width="69" height="30"/>
+                                <rect key="frame" x="239" y="28" width="65" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Debugger"/>
                                 <connections>
                                     <action selector="actionButtonDebuggerTapped:" destination="TWt-XQ-q9G" eventType="touchUpInside" id="66C-YR-vgW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pu0-er-NFD">
+                                <rect key="frame" x="118.5" y="28" width="53" height="29"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Initialise"/>
+                                <connections>
+                                    <action selector="actionButtonInitialiseTapped:" destination="TWt-XQ-q9G" eventType="touchUpInside" id="3Nc-Eb-R8d"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -99,13 +109,16 @@
                             <constraint firstItem="hcO-ae-Agr" firstAttribute="top" secondItem="FK6-kD-Hha" secondAttribute="bottom" constant="16" id="A4s-C4-fOZ"/>
                             <constraint firstItem="6dn-q9-Mku" firstAttribute="width" secondItem="MEa-WS-mYE" secondAttribute="width" id="Acm-TW-hJ9"/>
                             <constraint firstItem="ONA-d4-AWR" firstAttribute="leading" secondItem="Ei0-7z-d4I" secondAttribute="leadingMargin" id="BSn-OE-KnV"/>
+                            <constraint firstItem="pu0-er-NFD" firstAttribute="leading" secondItem="FK6-kD-Hha" secondAttribute="trailing" constant="8" id="Bxd-NH-0au"/>
                             <constraint firstItem="Tee-wY-X36" firstAttribute="top" secondItem="ONA-d4-AWR" secondAttribute="bottom" constant="12" id="CQj-yK-ekg"/>
                             <constraint firstItem="ZSm-08-Qre" firstAttribute="top" secondItem="hcO-ae-Agr" secondAttribute="bottom" constant="6" id="EYQ-9K-MtV"/>
                             <constraint firstItem="OWk-WD-YhF" firstAttribute="trailing" secondItem="ZSm-08-Qre" secondAttribute="trailing" id="G0a-Sd-sSs"/>
                             <constraint firstItem="CKl-1U-rw3" firstAttribute="top" secondItem="MEa-WS-mYE" secondAttribute="bottom" id="H3c-7k-qxo"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ONA-d4-AWR" secondAttribute="trailing" id="HLd-Z8-6z6"/>
+                            <constraint firstItem="pu0-er-NFD" firstAttribute="centerY" secondItem="FK6-kD-Hha" secondAttribute="centerY" id="MXQ-DQ-829"/>
                             <constraint firstItem="ZSm-08-Qre" firstAttribute="leading" secondItem="hcO-ae-Agr" secondAttribute="leading" id="PC8-Hm-H3T"/>
                             <constraint firstAttribute="trailing" secondItem="CKl-1U-rw3" secondAttribute="trailing" id="Tgg-JL-ZDL"/>
+                            <constraint firstItem="NcB-ot-lQL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pu0-er-NFD" secondAttribute="trailing" constant="8" id="VTp-Et-yge"/>
                             <constraint firstItem="MEa-WS-mYE" firstAttribute="top" secondItem="OWk-WD-YhF" secondAttribute="bottom" constant="12" id="X73-K8-C1H"/>
                             <constraint firstItem="6dn-q9-Mku" firstAttribute="trailing" secondItem="OWk-WD-YhF" secondAttribute="trailing" id="aT3-Dk-CSn"/>
                             <constraint firstItem="OWk-WD-YhF" firstAttribute="leading" secondItem="1X4-vE-X5M" secondAttribute="leading" id="d9p-aK-VMd"/>

@@ -18,17 +18,15 @@ extension LogView {
 
 func NSStringFromAdType(_ adType: TDAdTypes) -> String {
     switch adType {
-    case .typeInterstitial:
+    case .interstitial:
         return "Static Interstitial";
-    case .typeVideo:
+    case .video:
         return "Video Interstitial";
-    case .typeRewardedVideo:
+    case .rewardedVideo:
         return "Rewarded Video";
-    case .typeBanner:
+    case .banner:
         return "Banner";
-    case .typeOfferwall:
-        return "Offerwall";
-    case .typeMediatedNative:
+    case .mediatedNative:
         return "Native";
     default:
         return "Unknown";
@@ -58,7 +56,7 @@ func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
     }
 }
 
-class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDOfferwallAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
 
     // View
@@ -77,12 +75,11 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     var pickerViewAdUnit: UIPickerView!
     var pickerViewBannerSize: UIPickerView!
     // Data
-    let adTypes: [TDAdTypes] = [ .typeInterstitial,
-                                 .typeVideo,
-                                 .typeRewardedVideo,
-                                 .typeBanner,
-                                 .typeOfferwall,
-                                 .typeMediatedNative ]
+    let adTypes: [TDAdTypes] = [ .interstitial,
+                                 .video,
+                                 .rewardedVideo,
+                                 .banner,
+                                 .mediatedNative ]
     let bannerSizes: [TDMBannerSize] = [ .standard,
                                  .smartPortrait,
                                  .smartLandscape,
@@ -109,7 +106,6 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setupTapdaq()
     }
     
     func setup() {
@@ -140,15 +136,8 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             self.buttonShow.isEnabled  = Tapdaq.sharedSession().isInitialised() && self.isCurrentAdTypeReady
             var isLoadEnabled = Tapdaq.sharedSession().isInitialised()
             
-            if (self.selectedAdType == .typeOfferwall ||
-                self.selectedAdType == .typeBanner) {
-                self.textFieldPlacementTag.text = TDPTagDefault
-            } else {
-                self.textFieldPlacementTag.text = self.placementTag
-            }
-            
-            if (self.selectedAdType == .typeMediatedNative ||
-                self.selectedAdType == .typeBanner) {
+            if (self.selectedAdType == .mediatedNative ||
+                self.selectedAdType == .banner) {
                 if (self.viewBannerContainer.subviews.count == 0) {
                     isLoadEnabled = isLoadEnabled && true
                     self.buttonShow.setTitle("Show", for: .normal)
@@ -158,7 +147,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                     self.buttonShow.setTitle("Hide", for: .normal)
                 }
             }
-            if (self.selectedAdType == .typeBanner) {
+            if (self.selectedAdType == .banner) {
                 self.labelPlacementTag.text = "Banner Size:"
                 self.textFieldPlacementTag.text = NSStringFromBannerSize(self.selectedBannerSize);
             } else {
@@ -175,7 +164,10 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     // MARK: - Tapdaq
     
     func setupTapdaq() {
-        let properties = TDProperties.default()
+        var properties = Tapdaq.sharedSession()?.properties
+        if properties == nil {
+            properties = TDProperties.default()
+        }
         properties?.logLevel = .debug
         Tapdaq.sharedSession()?.delegate = self
         Tapdaq.sharedSession()?.setApplicationId(kAppId, clientKey: kClientKey, properties: properties)
@@ -184,17 +176,15 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     var isCurrentAdTypeReady: Bool {
         switch selectedAdType {
-        case TDAdTypes.typeInterstitial:
+        case TDAdTypes.interstitial:
             return Tapdaq.sharedSession().isInterstitialReady(forPlacementTag: placementTag)
-        case TDAdTypes.typeVideo:
+        case TDAdTypes.video:
             return Tapdaq.sharedSession().isVideoReady(forPlacementTag: placementTag)
-        case TDAdTypes.typeRewardedVideo:
+        case TDAdTypes.rewardedVideo:
             return Tapdaq.sharedSession().isRewardedVideoReady(forPlacementTag: placementTag)
-        case TDAdTypes.typeBanner:
+        case TDAdTypes.banner:
             return bannerView != nil
-        case TDAdTypes.typeOfferwall:
-            return Tapdaq.sharedSession().isOfferwallReady()
-        case TDAdTypes.typeMediatedNative:
+        case TDAdTypes.mediatedNative:
             return nativeAd != nil
         default:
             return false;
@@ -211,17 +201,17 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             present(alertController, animated: true, completion: nil)
             return
         }
-        if selectedAdType != .typeBanner && selectedAdType != .typeOfferwall {
+        if selectedAdType != .banner {
             logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag)
         }
         switch selectedAdType {
-        case TDAdTypes.typeInterstitial:
+        case TDAdTypes.interstitial:
             Tapdaq.sharedSession()?.loadInterstitial(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.typeVideo:
+        case TDAdTypes.video:
             Tapdaq.sharedSession()?.loadVideo(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.typeRewardedVideo:
+        case TDAdTypes.rewardedVideo:
             Tapdaq.sharedSession()?.loadRewardedVideo(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.typeBanner:
+        case TDAdTypes.banner:
             logView.log(format:"Loading %@ %@ for tag %@...", NSStringFromBannerSize(selectedBannerSize), NSStringFromAdType(self.selectedAdType), self.placementTag)
 
             Tapdaq.sharedSession()?.loadBanner(with: .standard, completion: { (banner) in
@@ -229,10 +219,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                 self.logView.log(format: "Did load banner")
                 self.update()
             })
-        case TDAdTypes.typeOfferwall:
-            logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), TDPTagDefault)
-            Tapdaq.sharedSession()?.loadOfferwall(with: self)
-        case TDAdTypes.typeMediatedNative:
+        case TDAdTypes.mediatedNative:
             Tapdaq.sharedSession()?.loadNativeAd(in: self, placementTag: placementTag, options: .adChoicesTopRight, delegate: self)
         default:
             break
@@ -243,13 +230,13 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         var logMessage: String? = String(format: "Showing %@ for tag %@...", NSStringFromAdType(selectedAdType), placementTag)
         
         switch selectedAdType {
-        case TDAdTypes.typeInterstitial:
+        case TDAdTypes.interstitial:
             Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: placementTag)
-        case TDAdTypes.typeVideo:
+        case TDAdTypes.video:
             Tapdaq.sharedSession()?.showVideo(forPlacementTag: placementTag)
-        case TDAdTypes.typeRewardedVideo:
+        case TDAdTypes.rewardedVideo:
             Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: placementTag, hashedUserId: "mediation_sample_user_id")
-        case TDAdTypes.typeBanner:
+        case TDAdTypes.banner:
             if bannerView != nil && viewBannerContainer.subviews.count == 0 {
                 show(adView: self.bannerView)
             } else {
@@ -257,9 +244,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                 self.bannerView = nil
                 hideAdView()
             }
-        case TDAdTypes.typeOfferwall:
-            Tapdaq.sharedSession()?.showOfferwall()
-        case TDAdTypes.typeMediatedNative:
+        case TDAdTypes.mediatedNative:
             if nativeAd != nil && viewBannerContainer.subviews.count == 0 {
                 let nativeAdView = TDNativeAdView(frame: .zero)
                 nativeAdView.nativeAd = nativeAd
@@ -377,17 +362,11 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         logView.log(format: "Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
     }
     
-    // MARK: - TDOfferwallAdRequestDelegate
-    func adRequest(_ adRequest: TDAdRequest, didReceiveOfferwallCredits creditInfo: [AnyHashable : Any]?) {
-        logView.log(format: "Did receive credits ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
-    }
-    
-    func didFail(toReceiveOfferwallCreditsAdRequest adRequest: TDAdRequest) {
-        logView.log(format: "Did fail to receive credits ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
-    }
-    
     // MARK: - Actions
     
+    @IBAction func actionButtonInitialise(_ sender: Any) {
+        setupTapdaq()
+    }
     // MARK: Button Debugger
     @IBAction func actionButtonDebuggerTapped(_ sender: Any) {
         view.endEditing(true)
@@ -414,7 +393,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             bannerView = nil
             hideAdView()
             return false
-        } else if textField === textFieldPlacementTag && selectedAdType == .typeBanner {
+        } else if textField === textFieldPlacementTag && selectedAdType == .banner {
             textFieldBannerSizeDummy.becomeFirstResponder()
             nativeAd = nil
             bannerView = nil

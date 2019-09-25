@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TWt-XQ-q9G">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TWt-XQ-q9G">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -85,10 +85,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcB-ot-lQL">
-                                <rect key="frame" x="290" y="27.5" width="69" height="30"/>
+                                <rect key="frame" x="294" y="28" width="65" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Debugger"/>
                                 <connections>
                                     <action selector="actionButtonDebuggerTapped:" destination="TWt-XQ-q9G" eventType="touchUpInside" id="66C-YR-vgW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZPZ-8M-GuP">
+                                <rect key="frame" x="118.5" y="28" width="53" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Initialise"/>
+                                <connections>
+                                    <action selector="actionButtonInitialise:" destination="TWt-XQ-q9G" eventType="touchUpInside" id="FrP-4X-eV6"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -110,7 +119,9 @@
                             <constraint firstItem="6dn-q9-Mku" firstAttribute="trailing" secondItem="OWk-WD-YhF" secondAttribute="trailing" id="aT3-Dk-CSn"/>
                             <constraint firstItem="OWk-WD-YhF" firstAttribute="leading" secondItem="1X4-vE-X5M" secondAttribute="leading" id="d9p-aK-VMd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NcB-ot-lQL" secondAttribute="trailing" id="dbL-V2-7NG"/>
+                            <constraint firstItem="ZPZ-8M-GuP" firstAttribute="leading" secondItem="FK6-kD-Hha" secondAttribute="trailing" constant="8" id="dcR-NE-630"/>
                             <constraint firstItem="ZSm-08-Qre" firstAttribute="leading" secondItem="Ei0-7z-d4I" secondAttribute="leadingMargin" id="diC-RL-57r"/>
+                            <constraint firstItem="NcB-ot-lQL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZPZ-8M-GuP" secondAttribute="trailing" constant="8" id="fKK-rn-lER"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ZSm-08-Qre" secondAttribute="trailing" id="fbD-cy-ZwS"/>
                             <constraint firstItem="MEa-WS-mYE" firstAttribute="leading" secondItem="OWk-WD-YhF" secondAttribute="leading" id="g0v-FT-VVf"/>
                             <constraint firstItem="FK6-kD-Hha" firstAttribute="leading" secondItem="Ei0-7z-d4I" secondAttribute="leadingMargin" id="jPb-nh-nyN"/>
@@ -120,6 +131,7 @@
                             <constraint firstItem="NcB-ot-lQL" firstAttribute="centerY" secondItem="FK6-kD-Hha" secondAttribute="centerY" id="owZ-cr-CMZ"/>
                             <constraint firstItem="1X4-vE-X5M" firstAttribute="top" secondItem="ZSm-08-Qre" secondAttribute="bottom" constant="12" id="q3K-Lb-gdo"/>
                             <constraint firstItem="CKl-1U-rw3" firstAttribute="leading" secondItem="Ei0-7z-d4I" secondAttribute="leading" id="qrK-tA-dFU"/>
+                            <constraint firstItem="ZPZ-8M-GuP" firstAttribute="centerY" secondItem="FK6-kD-Hha" secondAttribute="centerY" id="uFN-aA-bja"/>
                             <constraint firstItem="OWk-WD-YhF" firstAttribute="top" secondItem="1X4-vE-X5M" secondAttribute="bottom" constant="6" id="zL1-lJ-VzI"/>
                         </constraints>
                     </view>
