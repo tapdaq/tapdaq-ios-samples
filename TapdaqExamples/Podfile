@@ -3,10 +3,8 @@ platform :ios, '9.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 # This line is required to be able to install Tapdaq SDK and network adapters
-# Production
-# source 'https://github.com/tapdaq/cocoapods.git'
-# Staging
-source 'https://github.com/tapdaq/cocoapods.git'
+source 'https://github.com/tapdaq/cocoapods-specs.git'
+
 
 use_frameworks!
 
