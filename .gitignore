@@ -37,6 +37,7 @@ xcuserdata/
 Pods/
 TapdaqExamples/Pods
 TapdaqCrossPromoExamples/Pods
+TapdaqExamples/Podfile.lock
 
 # Carthage
 #
