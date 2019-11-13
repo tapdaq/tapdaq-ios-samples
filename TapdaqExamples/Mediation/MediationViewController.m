@@ -42,8 +42,6 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
             return @"Smart Landscape";
         case TDMBannerLeaderboard:
             return @"Leaderboard";
-        case TDMBannerSkyscraper:
-            return @"Skyscraper";
         case TDMBannerFull:
             return @"Full";
         default:
@@ -96,8 +94,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
                           @(TDMBannerMedium),
                           @(TDMBannerLarge),
                           @(TDMBannerLeaderboard),
-                          @(TDMBannerFull),
-                          @(TDMBannerSkyscraper) ];
+                          @(TDMBannerFull)];
     self.selectedBannerSize = [self.bannerSizes.firstObject integerValue];
     self.selectedAdType = [self.adTypes.firstObject integerValue];
     self.placementTag = self.textFieldPlacementTag.text = TDPTagDefault;

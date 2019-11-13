@@ -47,8 +47,6 @@ func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
         return "Smart Landscape";
     case .leaderboard:
         return "Leaderboard";
-    case .skyscraper:
-        return "SKyscraper";
     case .full:
         return "Full";
     default:
@@ -86,8 +84,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                                  .medium,
                                  .large,
                                  .leaderboard,
-                                 .full,
-                                 .skyscraper ]
+                                 .full]
     var bannerView: UIView? = nil
     var nativeAd: TDMediatedNativeAd? = nil
     
