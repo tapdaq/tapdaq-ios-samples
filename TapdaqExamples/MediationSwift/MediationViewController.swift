@@ -345,7 +345,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         update()
     }
     
-    // MARK: - TDDisplayableAdRequestDelegate
+    // MARK: - TDDClickableAdRequestDelegate
     func didClick(_ adRequest: TDAdRequest) {
         logView.log(format: "Did click ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
     }

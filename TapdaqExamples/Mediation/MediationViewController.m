@@ -49,7 +49,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     }
 }
 
-@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, TDClickableAdRequestDelegate,  TDDisplayableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 // View
 @property (weak, nonatomic) IBOutlet UILabel *labelVersion;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldAdUnit;
