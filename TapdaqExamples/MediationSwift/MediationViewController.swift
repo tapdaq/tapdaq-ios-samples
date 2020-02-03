@@ -16,23 +16,6 @@ extension LogView {
     }
 }
 
-func NSStringFromAdType(_ adType: TDAdTypes) -> String {
-    switch adType {
-    case .interstitial:
-        return "Static Interstitial";
-    case .video:
-        return "Video Interstitial";
-    case .rewardedVideo:
-        return "Rewarded Video";
-    case .banner:
-        return "Banner";
-    case .mediatedNative:
-        return "Native";
-    default:
-        return "Unknown";
-    }
-}
-
 func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
     switch bannerSize {
     case .standard:
@@ -41,10 +24,8 @@ func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
         return "Medium";
     case .large:
         return "Large";
-    case .smartPortrait:
-        return "Smart Portrait";
-    case .smartLandscape:
-        return "Smart Landscape";
+    case .smart:
+        return "Smart";
     case .leaderboard:
         return "Leaderboard";
     case .full:
@@ -73,14 +54,13 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     var pickerViewAdUnit: UIPickerView!
     var pickerViewBannerSize: UIPickerView!
     // Data
-    let adTypes: [TDAdTypes] = [ .interstitial,
-                                 .video,
-                                 .rewardedVideo,
-                                 .banner,
-                                 .mediatedNative ]
+    let adUnits: [TDAdUnit] = [ .unitStaticInterstitial,
+                                 .unitVideoInterstitial,
+                                 .unitRewardedVideo,
+                                 .unitBanner,
+                                 .unitMediatedNative ]
     let bannerSizes: [TDMBannerSize] = [ .standard,
-                                 .smartPortrait,
-                                 .smartLandscape,
+                                 .smart,
                                  .medium,
                                  .large,
                                  .leaderboard,
@@ -89,10 +69,10 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     var nativeAd: TDMediatedNativeAd? = nil
     
     // State
-    var selectedAdType: TDAdTypes! {
+    var selectedAdUnit: TDAdUnit! {
         didSet {
             if (textFieldAdUnit != nil) {
-                textFieldAdUnit.text = NSStringFromAdType(selectedAdType)
+                textFieldAdUnit.text = NSStringFromAdUnit(selectedAdUnit)
             }
         }
     }
@@ -106,7 +86,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     
     func setup() {
-        selectedAdType = adTypes.first
+        selectedAdUnit = adUnits.first
         selectedBannerSize = bannerSizes.first
         textFieldDummy = UITextField(frame: .zero)
         view.addSubview(textFieldDummy)
@@ -133,8 +113,8 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             self.buttonShow.isEnabled  = Tapdaq.sharedSession().isInitialised() && self.isCurrentAdTypeReady
             var isLoadEnabled = Tapdaq.sharedSession().isInitialised()
             
-            if (self.selectedAdType == .mediatedNative ||
-                self.selectedAdType == .banner) {
+            if (self.selectedAdUnit == .unitMediatedNative ||
+                self.selectedAdUnit == .unitBanner) {
                 if (self.viewBannerContainer.subviews.count == 0) {
                     isLoadEnabled = isLoadEnabled && true
                     self.buttonShow.setTitle("Show", for: .normal)
@@ -144,7 +124,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                     self.buttonShow.setTitle("Hide", for: .normal)
                 }
             }
-            if (self.selectedAdType == .banner) {
+            if (self.selectedAdUnit == .unitBanner) {
                 self.labelPlacementTag.text = "Banner Size:"
                 self.textFieldPlacementTag.text = NSStringFromBannerSize(self.selectedBannerSize);
             } else {
@@ -172,16 +152,16 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     
     var isCurrentAdTypeReady: Bool {
-        switch selectedAdType {
-        case TDAdTypes.interstitial:
+        switch selectedAdUnit {
+        case .unitStaticInterstitial:
             return Tapdaq.sharedSession().isInterstitialReady(forPlacementTag: placementTag)
-        case TDAdTypes.video:
+        case .unitVideoInterstitial:
             return Tapdaq.sharedSession().isVideoReady(forPlacementTag: placementTag)
-        case TDAdTypes.rewardedVideo:
+        case .unitRewardedVideo:
             return Tapdaq.sharedSession().isRewardedVideoReady(forPlacementTag: placementTag)
-        case TDAdTypes.banner:
+        case .unitBanner:
             return bannerView != nil
-        case TDAdTypes.mediatedNative:
+        case .unitMediatedNative:
             return nativeAd != nil
         default:
             return false;
@@ -198,25 +178,25 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             present(alertController, animated: true, completion: nil)
             return
         }
-        if selectedAdType != .banner {
-            logView.log(format:"Loading %@ for tag %@...", NSStringFromAdType(self.selectedAdType), self.placementTag)
+        if selectedAdUnit != .unitBanner {
+            logView.log(format:"Loading %@ for tag %@...", NSStringFromAdUnit(self.selectedAdUnit), self.placementTag)
         }
-        switch selectedAdType {
-        case TDAdTypes.interstitial:
+        switch selectedAdUnit {
+        case .unitStaticInterstitial:
             Tapdaq.sharedSession()?.loadInterstitial(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.video:
+        case .unitVideoInterstitial:
             Tapdaq.sharedSession()?.loadVideo(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.rewardedVideo:
+        case .unitRewardedVideo:
             Tapdaq.sharedSession()?.loadRewardedVideo(forPlacementTag: placementTag, delegate: self)
-        case TDAdTypes.banner:
-            logView.log(format:"Loading %@ %@ for tag %@...", NSStringFromBannerSize(selectedBannerSize), NSStringFromAdType(self.selectedAdType), self.placementTag)
+        case .unitBanner:
+            logView.log(format:"Loading %@ %@ for tag %@...", NSStringFromBannerSize(selectedBannerSize), NSStringFromAdUnit(self.selectedAdUnit), self.placementTag)
 
             Tapdaq.sharedSession()?.loadBanner(with: .standard, completion: { (banner) in
                 self.bannerView = banner
                 self.logView.log(format: "Did load banner")
                 self.update()
             })
-        case TDAdTypes.mediatedNative:
+        case .unitMediatedNative:
             Tapdaq.sharedSession()?.loadNativeAd(in: self, placementTag: placementTag, options: .adChoicesTopRight, delegate: self)
         default:
             break
@@ -224,16 +204,16 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     }
     
     func showCurrentAdType() {
-        var logMessage: String? = String(format: "Showing %@ for tag %@...", NSStringFromAdType(selectedAdType), placementTag)
+        var logMessage: String? = String(format: "Showing %@ for tag %@...", NSStringFromAdUnit(selectedAdUnit), placementTag)
         
-        switch selectedAdType {
-        case TDAdTypes.interstitial:
+        switch selectedAdUnit {
+        case .unitStaticInterstitial:
             Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: placementTag)
-        case TDAdTypes.video:
+        case .unitVideoInterstitial:
             Tapdaq.sharedSession()?.showVideo(forPlacementTag: placementTag)
-        case TDAdTypes.rewardedVideo:
-            Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: placementTag, hashedUserId: "mediation_sample_user_id")
-        case TDAdTypes.banner:
+        case .unitRewardedVideo:
+            Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: placementTag)
+        case .unitBanner:
             if bannerView != nil && viewBannerContainer.subviews.count == 0 {
                 show(adView: self.bannerView)
             } else {
@@ -241,7 +221,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
                 self.bannerView = nil
                 hideAdView()
             }
-        case TDAdTypes.mediatedNative:
+        case .unitMediatedNative:
             if nativeAd != nil && viewBannerContainer.subviews.count == 0 {
                 let nativeAdView = TDNativeAdView(frame: .zero)
                 nativeAdView.nativeAd = nativeAd
@@ -276,7 +256,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     func hideAdView() {
         if viewBannerContainer.subviews.count == 0 { return }
-        logView.log(format: "Hidden %@ for tag %@", NSStringFromAdType(self.selectedAdType), self.placementTag)
+        logView.log(format: "Hidden %@ for tag %@", NSStringFromAdUnit(self.selectedAdUnit), self.placementTag)
         viewAdHeightConstraint.constant = 0
         for subview in viewBannerContainer.subviews {
             subview.removeFromSuperview()
@@ -302,7 +282,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     // MARK: - TDAdRequestDelegate
     func didLoad(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did load ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+        logView.log(format: "Did load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
         if adRequest is TDNativeAdRequest {
             nativeAd = (adRequest as! TDNativeAdRequest).nativeAd
         }
@@ -311,7 +291,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     func adRequest(_ adRequest: TDAdRequest, didFailToLoadWithError error: TDError?) {
         guard let error = error else {
-            logView.log(format: "Did fail to load ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+            logView.log(format: "Did fail to load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
             return
         }
         var errorString = ""
@@ -323,40 +303,40 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             }
         }
         
-        logView.log(format: "Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, errorString)
+        logView.log(format: "Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, errorString)
     }
     
     // MARK: - TDDisplayableAdRequestDelegate
     
     func adRequest(_ adRequest: TDAdRequest, didFailToDisplayWithError error: TDError?) {
-        logView.log(format: "Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, error?.localizedDescription ?? "")
+        logView.log(format: "Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, error?.localizedDescription ?? "")
     }
     
     func willDisplay(_ adRequest: TDAdRequest) {
-        logView.log(format: "Will display ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+        logView.log(format: "Will display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
     func didDisplay(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did display ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+        logView.log(format: "Did display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
     func didClose(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did close ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+        logView.log(format: "Did close ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
         update()
     }
     
     // MARK: - TDDClickableAdRequestDelegate
     func didClick(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did click ad unit - %@ tag - %@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag)
+        logView.log(format: "Did click ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
     // MARK: - TDRewardedVideoAdRequestDelegate
     func adRequest(_ adRequest: TDAdRequest, didValidate reward: TDReward) {
-        logView.log(format: "Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
+        logView.log(format: "Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
     }
     
     func adRequest(_ adRequest: TDAdRequest, didFailToValidate reward: TDReward) {
-        logView.log(format: "Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdType(adRequest.placement.adTypes), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
+        logView.log(format: "Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
     }
     
     // MARK: - Actions
@@ -390,7 +370,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             bannerView = nil
             hideAdView()
             return false
-        } else if textField === textFieldPlacementTag && selectedAdType == .banner {
+        } else if textField === textFieldPlacementTag && selectedAdUnit == .unitBanner {
             textFieldBannerSizeDummy.becomeFirstResponder()
             nativeAd = nil
             bannerView = nil
@@ -402,7 +382,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField === textFieldDummy {
-            pickerViewAdUnit.selectRow(adTypes.firstIndex(of: selectedAdType!) ?? 0, inComponent: 0, animated: false)
+            pickerViewAdUnit.selectRow(adUnits.firstIndex(of: selectedAdUnit!) ?? 0, inComponent: 0, animated: false)
         } else if textField === textFieldBannerSizeDummy {
             pickerViewAdUnit.selectRow(bannerSizes.firstIndex(of: selectedBannerSize!) ?? 0, inComponent: 0, animated: false)
 
@@ -442,14 +422,14 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         if pickerView === pickerViewBannerSize {
             return bannerSizes.count
         }
-        return adTypes.count
+        return adUnits.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView === pickerViewBannerSize {
             return NSStringFromBannerSize(bannerSizes[row])
         }
-        return NSStringFromAdType(adTypes[row])
+        return NSStringFromAdUnit(adUnits[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -457,7 +437,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
             selectedBannerSize = bannerSizes[row]
         } else if pickerView === pickerViewAdUnit {
             
-            selectedAdType = adTypes[row]
+            selectedAdUnit = adUnits[row]
         }
         update()
     }
