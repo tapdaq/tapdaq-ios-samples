@@ -23,12 +23,6 @@ def interstitial_networks
     pod 'Tapdaq/YouAppi', '7.5.0' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
 end
 
-def native_networks
-    pod 'Tapdaq/AdMob', '7.5.0'
-    pod 'Tapdaq/AppLovin', '7.5.0'
-    pod 'Tapdaq/FAN', '7.5.0'
-end
-
 def all_networks
     pod 'Tapdaq/AdColony', '7.5.0'
     pod 'Tapdaq/AdMob', '7.5.0'
@@ -55,16 +49,6 @@ end
 target 'InterstitialOnBootupSwift' do
     sdk_dep
     interstitial_networks
-end
-
-target 'NativeAdsMediation' do
-    sdk_dep
-    native_networks
-end
-
-target 'NativeAdsMediationSwift' do
-    sdk_dep
-    native_networks
 end
 
 target 'Mediation' do
