@@ -68,39 +68,39 @@ extension AppDelegate: TapdaqDelegate {
     private func didFailToLoadConfigWithError(_ error: TDError!) {
         log(message: "didFailToLoadConfig()")
     }
+    
+    func didClick(_ adRequest: TDAdRequest) {
+        log(message: "Did click ad request for placement tag: " + adRequest.placement.tag)
+    }
 }
 
 extension AppDelegate: TDAdRequestDelegate {
-    func didLoad(_ adRequest: TDAdRequest) {
-        log(message: "Did load ad request for placement tag: " + adRequest.placement.tag)
-        Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: adRequest.placement.tag)
-    }
-    
+
     func adRequest(_ adRequest: TDAdRequest, didFailToLoadWithError error: TDError?) {
         log(message: "Did fail to load ad request for placement tag: " + adRequest.placement.tag + " with error: " + (error?.localizedDescription ?? ""))
     }
 }
 
-extension AppDelegate: TDDisplayableAdRequestDelegate {
-    func willDisplay(_ adRequest: TDAdRequest) {
+extension AppDelegate: TDInterstitialAdRequestDelegate {
+
+    func didLoad(_ adRequest: TDInterstitialAdRequest) {
+        log(message: "Did load ad request for placement tag: " + adRequest.placement.tag)
+        Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: adRequest.placement.tag, delegate: self)
+    }
+    
+    func willDisplay(_ adRequest: TDInterstitialAdRequest) {
         log(message: "Will display ad request for placement tag: " + adRequest.placement.tag)
     }
     
-    func didDisplay(_ adRequest: TDAdRequest) {
+    func didDisplay(_ adRequest: TDInterstitialAdRequest) {
         log(message: "Did display ad request for placement tag: " + adRequest.placement.tag)
     }
     
-    func adRequest(_ adRequest: TDAdRequest, didFailToDisplayWithError error: TDError?) {
+    func adRequest(_ adRequest: TDInterstitialAdRequest, didFailToDisplayWithError error: TDError?) {
         log(message: "Failed to display: " + adRequest.placement.tag + " with error: " + (error?.localizedDescription ?? ""))
     }
     
-    func didClose(_ adRequest: TDAdRequest) {
+    func didClose(_ adRequest: TDInterstitialAdRequest) {
         log(message: "Did close ad request for placement tag: " + adRequest.placement.tag)
-    }
-}
-
-extension AppDelegate: TDClickableAdRequestDelegate {
-    func didClick(_ adRequest: TDAdRequest) {
-        log(message: "Did click ad request for placement tag: " + adRequest.placement.tag)
     }
 }

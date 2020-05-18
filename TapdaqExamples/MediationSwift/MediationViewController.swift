@@ -35,8 +35,7 @@ func NSStringFromBannerSize(_ bannerSize: TDMBannerSize) -> String {
     }
 }
 
-class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    
+class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDelegate, TDInterstitialAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, TDNativeAdRequestDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     // View
     @IBOutlet weak var labelVersion: UILabel!
@@ -145,7 +144,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         if properties == nil {
             properties = TDProperties.default()
         }
-        properties?.logLevel = .debug
+        TDLogger.setLogLevel(.debug)
         Tapdaq.sharedSession()?.delegate = self
         Tapdaq.sharedSession()?.setApplicationId(kAppId, clientKey: kClientKey, properties: properties)
         logView.log(format: "Loading config for:\n    App ID: %@\n    Client Key: %@", kAppId, kClientKey)
@@ -191,11 +190,7 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         case .unitBanner:
             logView.log(format:"Loading %@ %@ for tag %@...", NSStringFromBannerSize(selectedBannerSize), NSStringFromAdUnit(self.selectedAdUnit), self.placementTag)
 
-            Tapdaq.sharedSession()?.loadBanner(with: .standard, completion: { (banner) in
-                self.bannerView = banner
-                self.logView.log(format: "Did load banner")
-                self.update()
-            })
+            Tapdaq.sharedSession()?.loadBanner(forPlacementTag: self.placementTag, with: selectedBannerSize, delegate: self)
         case .unitMediatedNative:
             Tapdaq.sharedSession()?.loadNativeAd(in: self, placementTag: placementTag, options: .adChoicesTopRight, delegate: self)
         default:
@@ -208,11 +203,11 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         
         switch selectedAdUnit {
         case .unitStaticInterstitial:
-            Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: placementTag)
+            Tapdaq.sharedSession()?.showInterstitial(forPlacementTag: placementTag, delegate: self)
         case .unitVideoInterstitial:
-            Tapdaq.sharedSession()?.showVideo(forPlacementTag: placementTag)
+            Tapdaq.sharedSession()?.showVideo(forPlacementTag: placementTag, delegate: self)
         case .unitRewardedVideo:
-            Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: placementTag)
+            Tapdaq.sharedSession()?.showRewardedVideo(forPlacementTag: placementTag, delegate: self)
         case .unitBanner:
             if bannerView != nil && viewBannerContainer.subviews.count == 0 {
                 show(adView: self.bannerView)
@@ -264,6 +259,12 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         update()
     }
     
+    func handleDidLoad(_ adRequest: TDAdRequest) {
+        logView.log(format: "Did load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
+        update()
+    }
+    
+    
     // MARK: - TapdaqDelegate
     
     func didLoadConfig() {
@@ -271,23 +272,16 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         update()
     }
     
-    func didFailToLoadConfigWithError(_ error: Error!) {
+    func didFailToLoadConfigWithError(_ error: TDError!) {
         logView.log(format: "Did fail to load config with error: %@", error.localizedDescription)
         update()
     }
     
-    func didRefreshBanner() {
-        logView.log(format: "Did refresh banner")
+    func didClick(_ adRequest: TDAdRequest) {
+        logView.log(format: "Did click ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
     // MARK: - TDAdRequestDelegate
-    func didLoad(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
-        if adRequest is TDNativeAdRequest {
-            nativeAd = (adRequest as! TDNativeAdRequest).nativeAd
-        }
-        update()
-    }
     
     func adRequest(_ adRequest: TDAdRequest, didFailToLoadWithError error: TDError?) {
         guard let error = error else {
@@ -306,37 +300,60 @@ class MediationViewController: UIViewController, TapdaqDelegate, TDAdRequestDele
         logView.log(format: "Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, errorString)
     }
     
-    // MARK: - TDDisplayableAdRequestDelegate
+    // MARK: - TDInterstitialAdRequestDelegate
     
-    func adRequest(_ adRequest: TDAdRequest, didFailToDisplayWithError error: TDError?) {
+    func didLoad(_ adRequest: TDInterstitialAdRequest) {
+        handleDidLoad(adRequest)
+    }
+    
+    func adRequest(_ adRequest: TDInterstitialAdRequest, didFailToDisplayWithError error: TDError?) {
         logView.log(format: "Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, error?.localizedDescription ?? "")
     }
     
-    func willDisplay(_ adRequest: TDAdRequest) {
+    func willDisplay(_ adRequest: TDInterstitialAdRequest) {
         logView.log(format: "Will display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
-    func didDisplay(_ adRequest: TDAdRequest) {
+    func didDisplay(_ adRequest: TDInterstitialAdRequest) {
         logView.log(format: "Did display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
     }
     
-    func didClose(_ adRequest: TDAdRequest) {
+    func didClose(_ adRequest: TDInterstitialAdRequest) {
         logView.log(format: "Did close ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
         update()
     }
-    
-    // MARK: - TDDClickableAdRequestDelegate
-    func didClick(_ adRequest: TDAdRequest) {
-        logView.log(format: "Did click ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
-    }
-    
+
     // MARK: - TDRewardedVideoAdRequestDelegate
-    func adRequest(_ adRequest: TDAdRequest, didValidate reward: TDReward) {
-        logView.log(format: "Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
+    func adRequest(_ adRequest: TDInterstitialAdRequest, didValidate reward: TDReward) {
+        logView.log(format: "Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", (reward.customJson as! NSObject ).description)
     }
     
-    func adRequest(_ adRequest: TDAdRequest, didFailToValidate reward: TDReward) {
-        logView.log(format: "Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", reward.hashedUserId, (reward.customJson as! NSObject ).description)
+    func adRequest(_ adRequest: TDInterstitialAdRequest, didFailToValidate reward: TDReward) {
+        logView.log(format: "Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? "TRUE" : "FALSE", (reward.customJson as! NSObject ).description)
+    }
+    
+    // MARK: - TDNativeAdRequestDelegate
+    
+    func didLoad(_ adRequest: TDNativeAdRequest) {
+        nativeAd = adRequest.nativeAd
+        handleDidLoad(adRequest)
+    }
+    
+    // MARK: - TDBannerAdRequestDelegate
+    
+    func didLoad(_ adRequest: TDBannerAdRequest) {
+        bannerView = adRequest.bannerView()
+        handleDidLoad(adRequest)
+    }
+    
+    func didRefreshBanner(for adRequest: TDBannerAdRequest) {
+        logView.log(format: "Did refresh ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag)
+
+    }
+    
+    func didFailToRefreshBanner(for adRequest: TDBannerAdRequest, withError error: TDError?) {
+        logView.log(format: "Did fail to refresh ad unit - %@ tag - %@ - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, error?.localizedDescription ?? "")
+
     }
     
     // MARK: - Actions

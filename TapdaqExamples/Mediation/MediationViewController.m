@@ -31,7 +31,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     }
 }
 
-@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, TDClickableAdRequestDelegate,  TDDisplayableAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface MediationViewController () <TapdaqDelegate, TDAdRequestDelegate, TDInterstitialAdRequestDelegate, TDRewardedVideoAdRequestDelegate, TDBannerAdRequestDelegate, TDNativeAdRequestDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 // View
 @property (weak, nonatomic) IBOutlet UILabel *labelVersion;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldAdUnit;
@@ -141,7 +141,7 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     if(properties == nil) {
         properties = TDProperties.defaultProperties;
     }
-    properties.logLevel = TDLogLevelDebug;
+    TDLogger.logLevel = TDLogLevelDebug;
     [properties registerTestDevices:[[TDTestDevices alloc] initWithNetwork:TDMAdMob testDevices:[[NSMutableArray alloc] initWithObjects:kAdMobTestDevice, nil]]];
     [properties registerTestDevices:[[TDTestDevices alloc] initWithNetwork:TDMFacebookAudienceNetwork testDevices:[[NSMutableArray alloc] initWithObjects:kFANTestDevice, nil]]];
     
@@ -213,15 +213,15 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     
     switch (self.selectedAdUnit) {
         case TDUnitStaticInterstitial: {
-            [Tapdaq.sharedSession showInterstitialForPlacementTag:self.placementTag];
+            [Tapdaq.sharedSession showInterstitialForPlacementTag:self.placementTag delegate:self];
             break;
         }
         case TDUnitVideoInterstitial: {
-            [Tapdaq.sharedSession showVideoForPlacementTag:self.placementTag];
+            [Tapdaq.sharedSession showVideoForPlacementTag:self.placementTag delegate:self];
             break;
         }
         case TDUnitRewardedVideo: {
-            [Tapdaq.sharedSession showRewardedVideoForPlacementTag:self.placementTag];
+            [Tapdaq.sharedSession showRewardedVideoForPlacementTag:self.placementTag delegate:self];
             break;
         }
         case TDUnitBanner: {
@@ -274,7 +274,13 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     [self update];
 }
 
+- (void)handleDidLoadAdRequest:(TDAdRequest *)adRequest {
+    [self.logView log:@"Did load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
+    [self update];
+}
+
 #pragma mark - TapdaqDelegate
+
 - (void)didLoadConfig {
     [self.logView log:@"Did load config"];
     [self update];
@@ -287,24 +293,20 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
 
 #pragma mark - TDAdRequestDelegate
 
-- (void)didLoadAdRequest:(TDAdRequest * _Nonnull)adRequest {
-    [self.logView log:@"Did load ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
-    if ([adRequest isKindOfClass:TDNativeAdRequest.class]) {
-        self.nativeAd = [(TDNativeAdRequest *)adRequest nativeAd];
-    } else if ([adRequest isKindOfClass:TDBannerAdRequest.class]) {
-        self.bannerView = [(TDBannerAdRequest *)adRequest bannerView];
-        [self.logView log:@"Did load Banner"];
-        [self update];
-    }
-    [self update];
-}
-
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToLoadWithError:(TDError * _Nullable)error {
     [self.logView log:@"Did fail to load ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, error.localizedDescription];
 }
 
-#pragma mark TDDisplayableAdRequestDelegate
-- (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToDisplayWithError:(TDError * _Nullable)error {
+- (void)didClickAdRequest:(TDAdRequest * _Nonnull)adRequest {
+    [self.logView log:@"Did click ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
+}
+
+#pragma mark TDInterstitialAdRequestDelegate
+- (void)didLoadInterstitialAdRequest:(TDInterstitialAdRequest *)adRequest {
+    [self handleDidLoadAdRequest:adRequest];
+}
+
+- (void)adRequest:(TDInterstitialAdRequest * _Nonnull)adRequest didFailToDisplayWithError:(TDError * _Nullable)error {
     NSMutableString *errorString = [[NSMutableString alloc] init];
     [errorString appendString:error.localizedDescription];
     for (NSString *network in error.subErrors.allKeys) {
@@ -316,35 +318,43 @@ NSString *NSStringFromBannerSize(TDMBannerSize size) {
     [self.logView log:@"Did fail to display ad unit - %@ tag - %@\nError: %@\n", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, errorString];
 }
 
-- (void)willDisplayAdRequest:(TDAdRequest * _Nonnull)adRequest {
+- (void)willDisplayAdRequest:(TDInterstitialAdRequest * _Nonnull)adRequest {
     [self.logView log:@"Will display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
 }
 
-- (void)didDisplayAdRequest:(TDAdRequest * _Nonnull)adRequest {
+- (void)didDisplayAdRequest:(TDInterstitialAdRequest * _Nonnull)adRequest {
     [self.logView log:@"Did display ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
 }
 
-- (void)didCloseAdRequest:(TDAdRequest * _Nonnull)adRequest {
+- (void)didCloseAdRequest:(TDInterstitialAdRequest * _Nonnull)adRequest {
     [self.logView log:@"Did close ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
     [self update];
 }
 
-#pragma mark TDClickableAdRequestDelegate
-- (void)didClickAdRequest:(TDAdRequest * _Nonnull)adRequest {
-    [self.logView log:@"Did click ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
-}
-
 #pragma mark TDRewardedVideoAdRequestDelegate
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didValidateReward:(TDReward * _Nonnull)reward {
-    [self.logView log:@"Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? @"TRUE" : @"FALSE", reward.hashedUserId, reward.customJson];
+    [self.logView log:@"Validated reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? @"TRUE" : @"FALSE", reward.customJson];
 }
 
 - (void)adRequest:(TDAdRequest * _Nonnull)adRequest didFailToValidateReward:(TDReward * _Nonnull)reward {
-    [self.logView log:@"Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Hashed user ID: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? @"TRUE" : @"FALSE", reward.hashedUserId, reward.customJson];
+    [self.logView log:@"Failed to validate reward for ad unit - %@ for tag - %@\nReward:\n    ID: %@\n    Name: %@\n    Amount: %i\n    Is valid: %@\n    Custom JSON:\n%@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag, reward.rewardId, reward.name, reward.value, reward.isValid ? @"TRUE" : @"FALSE", reward.customJson];
+}
+
+#pragma mark TDNativeAdRequestDelegate
+
+- (void)didLoadNativeAdRequest:(TDNativeAdRequest *)adRequest {
+    self.nativeAd = [adRequest nativeAd];
+    [self handleDidLoadAdRequest:adRequest];
 }
 
 #pragma mark TDBannerAdRequestDelegate
-- (void)didRefreshBannerForAdRequest:(TDAdRequest * _Nonnull)adRequest {
+
+- (void)didLoadBannerAdRequest:(TDBannerAdRequest *)adRequest {
+    self.bannerView = [adRequest bannerView];
+    [self handleDidLoadAdRequest:adRequest];
+}
+
+- (void)didRefreshBannerForAdRequest:(TDBannerAdRequest * _Nonnull)adRequest {
     [self.logView log:@"Did refresh ad unit - %@ tag - %@", NSStringFromAdUnit(adRequest.placement.adUnit), adRequest.placement.tag];
 }
 

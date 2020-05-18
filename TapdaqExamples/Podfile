@@ -31,7 +31,7 @@ def all_networks
     pod 'Tapdaq/Maio'
     pod 'Tapdaq/Mintegral'
     pod 'Tapdaq/Tapjoy'
-    pod 'Tapdaq/TikTok'
+    pod 'Tapdaq/Pangle'
     pod 'Tapdaq/UnityAds'
     pod 'Tapdaq/Vungle'
     pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.

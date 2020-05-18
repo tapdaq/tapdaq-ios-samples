@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
-@interface AppDelegate () <TapdaqDelegate, TDAdRequestDelegate, TDDisplayableAdRequestDelegate, TDClickableAdRequestDelegate>
+@interface AppDelegate () <TapdaqDelegate, TDAdRequestDelegate, TDInterstitialAdRequestDelegate>
 
 @end
 
@@ -74,35 +74,33 @@
 }
 
 #pragma mark - TDAdRequestDelegate
-- (void)didLoadAdRequest:(TDAdRequest *)adRequest {
-    [Tapdaq.sharedSession showInterstitialForPlacementTag:TDPTagDefault];
-}
 
 - (void)adRequest:(TDAdRequest *)adRequest didFailToLoadWithError:(TDError *)error {
     [self logMessage:[NSString stringWithFormat:@"Failed to load ad for placement: %@", adRequest.placement.tag]];
 }
 
-#pragma mark - TDDisplayableAdRequestDelegate
+- (void)didClickAdRequest:(TDAdRequest *)adRequest {
+    [self logMessage:[NSString stringWithFormat:@"Did click ad request for tag: %@", adRequest.placement.tag]];
+}
+#pragma mark - TDInterstitialAdRequestDelegate
 
-- (void)willDisplayAdRequest:(TDAdRequest *)adRequest {
+- (void)didLoadInterstitialAdRequest:(TDInterstitialAdRequest *)adRequest {
+    [Tapdaq.sharedSession showInterstitialForPlacementTag:TDPTagDefault delegate:self];
+}
+
+- (void)willDisplayAdRequest:(TDInterstitialAdRequest *)adRequest {
     [self logMessage:[NSString stringWithFormat:@"Will display ad request for tag: %@", adRequest.placement.tag]];
 }
 
-- (void)didDisplayAdRequest:(TDAdRequest *)adRequest {
+- (void)didDisplayAdRequest:(TDInterstitialAdRequest *)adRequest {
     [self logMessage:[NSString stringWithFormat:@"Did display ad request for tag: %@", adRequest.placement.tag]];
 }
 
-- (void)adRequest:(TDAdRequest *)adRequest didFailToDisplayWithError:(TDError *)error {
+- (void)adRequest:(TDInterstitialAdRequest *)adRequest didFailToDisplayWithError:(TDError *)error {
     [self logMessage:[NSString stringWithFormat:@"Failed to display: %@ with error: %@", adRequest.placement.tag, error.localizedDescription]];
 }
 
-- (void)didCloseAdRequest:(TDAdRequest *)adRequest {
+- (void)didCloseAdRequest:(TDInterstitialAdRequest *)adRequest {
     [self logMessage:[NSString stringWithFormat:@"Did close ad request for tag: %@", adRequest.placement.tag]];
-}
-
-#pragma mark - TDClickableAdRequestDelegate
-- (void)didClickAdRequest:(TDAdRequest *)adRequest {
-    [self logMessage:[NSString stringWithFormat:@"Did click ad request for tag: %@", adRequest.placement.tag]];
-
 }
 @end
