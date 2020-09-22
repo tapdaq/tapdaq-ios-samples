@@ -3,39 +3,38 @@ platform :ios, '9.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 # This line is required to be able to install Tapdaq SDK and network adapters
-source 'https://github.com/tapdaq/cocoapods-specs.git'
+#source 'https://github.com/tapdaq/cocoapods-specs.git'
+source 'https://github.com/tapdaq/cocoapods.git'
 
 
 use_frameworks!
 
 def sdk_dep
-    pod 'Tapdaq'
+    pod 'Tapdaq', '7.8.0'
 end
 
 def interstitial_networks
-    pod 'Tapdaq/AdMob'
-    pod 'Tapdaq/AppLovin'
-    pod 'Tapdaq/Chartboost'
-    pod 'Tapdaq/InMobi'
-    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
+    pod 'Tapdaq/AdMob', '7.8.0'
+    pod 'Tapdaq/AppLovin', '7.8.0'
+    pod 'Tapdaq/Chartboost', '7.8.0'
+    pod 'Tapdaq/InMobi', '7.8.0'
+    pod 'Tapdaq/YouAppi', '7.8.0' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
 end
 
 def all_networks
-    pod 'Tapdaq/AdColony'
-    pod 'Tapdaq/AdMob'
-    pod 'Tapdaq/AppLovin'
-    pod 'Tapdaq/Chartboost'
-    pod 'Tapdaq/FAN'
-    pod 'Tapdaq/InMobi'
-    pod 'Tapdaq/IronSource'
-    pod 'Tapdaq/Maio'
-    pod 'Tapdaq/Mintegral'
-    pod 'Tapdaq/Tapjoy'
-    pod 'Tapdaq/Pangle'
-    pod 'Tapdaq/UnityAds'
-    pod 'Tapdaq/Vungle'
-    pod 'Tapdaq/YouAppi' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
-    pod 'Tapdaq/ZPlay'
+    pod 'Tapdaq/AdColony', '7.8.0'
+    pod 'Tapdaq/AdMob', '7.8.0'
+    pod 'Tapdaq/AppLovin', '7.8.0'
+    pod 'Tapdaq/Chartboost', '7.8.0'
+    pod 'Tapdaq/FAN', '7.8.0'
+    pod 'Tapdaq/InMobi', '7.8.0'
+    pod 'Tapdaq/IronSource', '7.8.0'
+    pod 'Tapdaq/Maio', '7.8.0'
+    pod 'Tapdaq/Tapjoy', '7.8.0'
+    pod 'Tapdaq/Pangle', '7.8.0'
+    pod 'Tapdaq/UnityAds', '7.8.0'
+    pod 'Tapdaq/Vungle', '7.8.0'
+    pod 'Tapdaq/YouAppi', '7.8.0' # Uncomment this line if you want to add YouAppi to the sample app. Please note that YouAppi requires a specific Xcode version to run.
 end
 
 target 'InterstitialOnBootup' do
